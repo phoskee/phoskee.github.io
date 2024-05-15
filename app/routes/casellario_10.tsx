@@ -156,9 +156,6 @@ export default function CasellarioAlfanumerico() {
             onValueChange={(e) => setNumChars(parseInt(e))}
             className="mb-5"
           />
-          <Button className="w-full my-1" onClick={handleNewSequence}>
-            Nuovo
-          </Button>
         </div>
       </div>
     </div>
