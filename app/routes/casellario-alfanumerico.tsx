@@ -22,7 +22,7 @@ export default function CasellarioAlfanumerico() {
   const [randomChars, setRandomChars] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [showRandomChars, setShowRandomChars] = useState(false);
-  const [timeoutValue, setTimeoutValue] = useState(1000); // valore di default: 1000 ms
+  const [timeoutValue, setTimeoutValue] = useState(2000); // valore di default: 2000 ms
   const [numChars, setNumChars] = useState(4); // valore di default: 4 caratteri
   const [open, setOpen] = React.useState(false);
   const [corrette, setCorrette] = useState(0);
