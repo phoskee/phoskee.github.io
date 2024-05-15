@@ -6,17 +6,6 @@ import { Input } from "~/components/ui/input";
 import { Slider } from "~/components/ui/slider";
 import { Link } from "@remix-run/react";
 import { ArrowLeftIcon } from "@radix-ui/react-icons";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "~/components/ui/alert-dialog";
 
 export default function CasellarioAlfanumerico() {
   const [randomChars, setRandomChars] = useState("");
@@ -31,7 +20,7 @@ export default function CasellarioAlfanumerico() {
   const generateNewChars = () => {
     const chars = [];
     const possibleChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    const randomIndexes = [];
+    const randomIndexes: number[] = [];
 
     // Genera un array di indici random unici
     while (randomIndexes.length < numChars) {
@@ -58,7 +47,7 @@ export default function CasellarioAlfanumerico() {
 
   // Mostra i caratteri casuali per il timeout specificato
   useEffect(() => {
-    let timeout;
+    let timeout: string | number | NodeJS.Timeout | undefined;
     if (showRandomChars) {
       timeout = setTimeout(() => {
         setShowRandomChars(false);
@@ -84,7 +73,11 @@ export default function CasellarioAlfanumerico() {
 
   // Genera una nuova sequenza di caratteri casuali e mostra
   const handleNewSequence = () => {
-    const newRandomChars = generateNewChars();
+    const newRandomChars = [];
+    for (let i = 0; i < 10; i++) {
+      const gridChars = generateNewChars();
+      newRandomChars.push(...gridChars);
+    }
     setCorrette(0);
     setTimeoutValue(2000);
     setRandomChars(newRandomChars);
@@ -100,45 +93,36 @@ export default function CasellarioAlfanumerico() {
         </Button>
       </Link>
       <div className="flex-col place-items-center mx-auto w-fit">
-        <div className="p-1">
-          <div className="w-fit grid grid-cols-3 gap-1 rounded-xl bg-pink-200 p-1">
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((index) => (
-              <input
-                key={index}
-                type="text"
-                maxLength={1}
-                className="bg-white text-center rounded-md size-14"
-                value={showRandomChars ? randomChars[index] : ""}
-                disabled={showRandomChars}
-                onChange={(e) => {
-                  if (!showRandomChars) {
-                    const newValue = [...inputValue];
-                    newValue[index] = e.target.value.toUpperCase();
-                    setInputValue(newValue.join("").toUpperCase());
+        <div className=" grid grid-cols-2 md:grid-cols-5 gap-1 p-1">
+          {[...Array(10)].map((_, gridIndex) => (
+            <div
+              key={gridIndex}
+              className="w-fit grid grid-cols-3 gap-1 rounded-xl bg-pink-200 p-1"
+            >
+              {[...Array(9)].map((_, cellIndex) => (
+                <input
+                  key={cellIndex}
+                  type="text"
+                  maxLength={1}
+                  className="bg-white text-center rounded-md size-14"
+                  value={
+                    showRandomChars
+                      ? randomChars[cellIndex + gridIndex * 9]
+                      : ""
                   }
-                }}
-              />
-            ))}
-          </div>
-        </div>
-        <div className="p-1">
-          <div className="w-fit grid grid-cols-3 gap-1 rounded-xl bg-pink-200 p-1">
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((index) => (
-              <input
-                key={index}
-                type="text"
-                maxLength={1}
-                pattern={REGEXP_ONLY_CHARS}
-                className="bg-white text-center rounded-md size-14"
-                value={inputValue[index] || ""}
-                onChange={(e) => {
-                  const newValue = [...inputValue];
-                  newValue[index] = e.target.value.toUpperCase();
-                  setInputValue(newValue);
-                }}
-              />
-            ))}
-          </div>
+                  disabled={showRandomChars}
+                  onChange={(e) => {
+                    if (!showRandomChars) {
+                      const newValue = [...inputValue];
+                      newValue[cellIndex + gridIndex * 9] =
+                        e.target.value.toUpperCase();
+                      setInputValue(newValue.join("").toUpperCase());
+                    }
+                  }}
+                />
+              ))}
+            </div>
+          ))}
         </div>
 
         <div className="p-1">
@@ -170,27 +154,11 @@ export default function CasellarioAlfanumerico() {
             onValueChange={(e) => setNumChars(parseInt(e))}
             className="mb-5"
           />
-          <Button className="w-full my-1" onClick={verifyInput}>
-            Verifica
-          </Button>
           <Button className="w-full my-1" onClick={handleNewSequence}>
             Nuovo
           </Button>
         </div>
       </div>
-      <AlertDialog open={open} onOpenChange={setOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>SEI UNA GRANDE!</AlertDialogTitle>
-            <AlertDialogDescription>
-              Hai indovinato {corrette} caratteri su {numChars}.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <Button onClick={() => setOpen(false)}>Continua</Button>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   );
 }
