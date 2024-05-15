@@ -104,7 +104,7 @@ export default function CasellarioAlfanumerico() {
                   key={cellIndex}
                   type="text"
                   maxLength={1}
-                  className="bg-white text-center rounded-md size-14"
+                  className="bg-white text-center rounded-md size-8 md:size-14 "
                   value={
                     showRandomChars
                       ? randomChars[cellIndex + gridIndex * 9]
@@ -124,7 +124,9 @@ export default function CasellarioAlfanumerico() {
             </div>
           ))}
         </div>
-
+        <Button className="w-full my-1" onClick={handleNewSequence}>
+          Nuovo
+        </Button>
         <div className="p-1">
           <Label htmlFor="timeoutInput">TimeOut {timeoutValue} (ms)</Label>
           <Input
