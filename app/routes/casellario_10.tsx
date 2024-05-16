@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { REGEXP_ONLY_CHARS } from "input-otp";
+import { useState, useEffect } from "react";
 import { Button } from "~/components/ui/button";
 import { Label } from "~/components/ui/label";
 import { Input } from "~/components/ui/input";
@@ -13,8 +12,7 @@ export default function CasellarioAlfanumerico() {
   const [showRandomChars, setShowRandomChars] = useState(false);
   const [timeoutValue, setTimeoutValue] = useState(2000); // valore di default: 2000 ms
   const [numChars, setNumChars] = useState(4); // valore di default: 4 caratteri
-  const [open, setOpen] = React.useState(false);
-  const [corrette, setCorrette] = useState(0);
+
 
   /// Genera una nuova sequenza di caratteri casuali e posizionali in modo random all'interno della griglia
   const generateNewChars = () => {
@@ -56,20 +54,6 @@ export default function CasellarioAlfanumerico() {
     return () => clearTimeout(timeout);
   }, [showRandomChars, timeoutValue]);
 
-  // Verifica le lettere inserite
-  const verifyInput = () => {
-    let correctCount = 0;
-    for (let i = 0; i < inputValue.length; i++) {
-      if (inputValue[i] === randomChars[i]) {
-        correctCount++;
-        setCorrette(correctCount);
-      }
-    }
-    //alert(`Hai indovinato ${correctCount} caratteri.`);
-    setOpen(true);
-    setTimeoutValue(10000);
-    setShowRandomChars(true);
-  };
 
   // Genera una nuova sequenza di caratteri casuali e mostra
   const handleNewSequence = () => {
@@ -78,7 +62,6 @@ export default function CasellarioAlfanumerico() {
       const gridChars = generateNewChars();
       newRandomChars.push(...gridChars);
     }
-    setCorrette(0);
     setTimeoutValue(2000);
     setRandomChars(newRandomChars);
     setShowRandomChars(true);
