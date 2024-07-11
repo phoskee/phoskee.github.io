@@ -200,9 +200,9 @@ export default function Index() {
   //    setSlotClasses(Array(25).fill('bg-yellow-200 rounded-md'));
 
   return (
-    <div className="flex place-items-center min-h-svh ">
+    <div className="flex place-items-center min-h-svh select-none">
       <div className="mx-auto">
-        <div className="mb-2 bg-pink-200 rounded-xl ">
+        <div className="mb-2 bg-pink-200 rounded-xl select-none">
           <InputOTP
             inputMode="text"
             pattern={REGEXP_ONLY_CHARS}
@@ -210,7 +210,7 @@ export default function Index() {
             value={value}
             onChange={(value) => setValue(value)}
           >
-            <InputOTPGroup className="grid grid-cols-5 gap-1 rounded-xl p-2">
+            <InputOTPGroup className="grid grid-cols-5 gap-1 rounded-xl p-2 select-none">
               {Array.from({ length: 25 }).map((_, index) => (
                 <InputOTPSlot
                   key={index}
@@ -253,7 +253,7 @@ export default function Index() {
           </Button> */}
         </div>
       </div>
-      <Label className="m-2 absolute bottom-0 left-0">versione 0.0.1</Label>
+      <Label className="m-2 absolute bottom-0 left-0">versione 0.0.2</Label>
     </div>
   );
 }
