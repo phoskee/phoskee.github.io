@@ -174,36 +174,31 @@ export default function Index() {
     return risultati;
   }
   const [slotClasses, setSlotClasses] = useState(
-    Array(25).fill('bg-white rounded-md')
+    Array(25).fill("bg-white rounded-md")
   );
 
-  const handleClassChange = (index, newClass) => {
-    const newClasses = [...slotClasses];
-    newClasses[index] = newClass;
-    setSlotClasses(newClasses);
-  };
+  
 
   const handleValueChange = (value) => {
     console.log("value", value);
 
-     // Assicurati che `value` sia un array
-     const indices = Array.isArray(value) ? value : value.split(',').map(Number);
+    // Assicurati che `value` sia un array
+    const indices = Array.isArray(value) ? value : value.split(",").map(Number);
 
     // Crea una copia dell'array delle classi
-    const newClasses = Array(25).fill('bg-white rounded-md');
+    const newClasses = Array(25).fill("bg-white rounded-md");
 
     // Imposta la classe per gli indici specificati
-    indices.forEach(index => {
-      newClasses[index] = 'bg-yellow-200';
+    indices.forEach((index) => {
+      console.log("index", index);
+      newClasses[index] = "bg-yellow-200";
     });
 
     // Aggiorna lo stato delle classi
     setSlotClasses(newClasses);
   };
 
-//    setSlotClasses(Array(25).fill('bg-yellow-200 rounded-md'));
-
- 
+  //    setSlotClasses(Array(25).fill('bg-yellow-200 rounded-md'));
 
   return (
     <div className="flex place-items-center min-h-svh ">
