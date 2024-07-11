@@ -60,7 +60,7 @@ export default function Index() {
         griglia.push([]);
         for (let j = 0; j < 5; j++) {
           const id = i * 5 + j + 1; // Calcola l'ID incrementale basato sulla posizione
-          const lettera = letters[i * 5 + j];
+          const lettera = letters[i * 5 + j].toUpperCase();
           griglia[i][j] = { id, lettera };
         }
         console.log("griglia creata");
@@ -160,15 +160,15 @@ export default function Index() {
           }
         }
       }
-
+      alert("Ricerca completata");
       return risultati;
     }
   };
 
   return (
-    <div className="flex place-items-center border border-red-500 min-h-svh ">
-      <div className="border border-red-500 mx-auto">
-        <div className="mb-2">
+    <div className="flex place-items-center min-h-svh ">
+      <div className="mx-auto">
+        <div className="mb-2 bg-pink-200 ">
           <InputOTP
             inputMode="text"
             pattern={REGEXP_ONLY_CHARS}
@@ -176,9 +176,13 @@ export default function Index() {
             value={value}
             onChange={(value) => setValue(value)}
           >
-            <InputOTPGroup className="grid grid-cols-5 gap-1 rounded-xl bg-pink-200 p-2">
+            <InputOTPGroup className="grid grid-cols-5 gap-1 rounded-xl p-2">
               {Array.from({ length: 25 }).map((_, index) => (
-                <InputOTPSlot key={index} index={index} />
+                <InputOTPSlot
+                  key={index}
+                  index={index}
+                  className="bg-white rounded-md"
+                />
               ))}
             </InputOTPGroup>
           </InputOTP>
@@ -207,13 +211,15 @@ export default function Index() {
               ))}
             </SelectContent>
           </Select>
-          <Link to="/test"><Button className="rounded-xl w-full" variant={"secondary"}>
-            Reset
-          </Button></Link>
-          <Input className="rounded-xl bg-white text-black"></Input>
+          <Link to="/test" reloadDocument>
+            <Button className="rounded-xl w-full" variant={"secondary"}>
+              Reset
+            </Button>
+          </Link>
+          {/* <Input className="rounded-xl bg-white text-black"></Input>
           <Button id="cerca-btn" className="rounded-xl" variant={"secondary"}>
             Cerca
-          </Button>
+          </Button> */}
         </div>
       </div>
     </div>
