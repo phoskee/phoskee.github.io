@@ -177,8 +177,6 @@ export default function Index() {
     Array(25).fill("bg-white rounded-md")
   );
 
-  
-
   const handleValueChange = (value) => {
     console.log("value", value);
 
@@ -191,7 +189,7 @@ export default function Index() {
     // Imposta la classe per gli indici specificati
     indices.forEach((index) => {
       console.log("index", index);
-      newClasses[index-1] = "bg-yellow-200";
+      newClasses[index - 1] = "bg-yellow-200  rounded-md";
     });
 
     // Aggiorna lo stato delle classi
