@@ -17,6 +17,7 @@ import {
 import { Button } from "~/components/ui/button";
 //import { Input } from "~/components/ui/input";
 import { Link } from "@remix-run/react";
+import { Label } from "~/components/ui/label";
 
 export const meta: MetaFunction = () => {
   return [{ title: "Tests" }];
@@ -252,6 +253,7 @@ export default function Index() {
           </Button> */}
         </div>
       </div>
+      <Label className="m-2 absolute bottom-0 left-0">versione 0.0.1</Label>
     </div>
   );
 }
