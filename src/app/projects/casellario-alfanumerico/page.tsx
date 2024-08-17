@@ -20,8 +20,8 @@ import {
 import Link from "next/link";
 
 export default function CasellarioAlfanumerico() {
-  const [randomChars, setRandomChars] = useState("");
-  const [inputValue, setInputValue] = useState("");
+  const [randomChars, setRandomChars] = useState<string[]>([]);
+  const [inputValue, setInputValue] = useState<string[]>([]);
   const [showRandomChars, setShowRandomChars] = useState(false);
   const [timeoutValue, setTimeoutValue] = useState(2000); // valore di default: 2000 ms
   const [numChars, setNumChars] = useState(4); // valore di default: 4 caratteri
@@ -32,7 +32,7 @@ export default function CasellarioAlfanumerico() {
   const generateNewChars = () => {
     const chars = [];
     const possibleChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    const randomIndexes = [];
+    const randomIndexes: number[] = [];
 
     // Genera un array di indici random unici
     while (randomIndexes.length < numChars) {
@@ -59,7 +59,7 @@ export default function CasellarioAlfanumerico() {
 
   // Mostra i caratteri casuali per il timeout specificato
   useEffect(() => {
-    let timeout;
+    let timeout: string | number | NodeJS.Timeout | undefined;
     if (showRandomChars) {
       timeout = setTimeout(() => {
         setShowRandomChars(false);
@@ -90,7 +90,7 @@ export default function CasellarioAlfanumerico() {
     setTimeoutValue(2000);
     setRandomChars(newRandomChars);
     setShowRandomChars(true);
-    setInputValue("");
+    setInputValue([]);
   };
 
   return (
@@ -115,7 +115,8 @@ export default function CasellarioAlfanumerico() {
                   if (!showRandomChars) {
                     const newValue = [...inputValue];
                     newValue[index] = e.target.value.toUpperCase();
-                    setInputValue(newValue.join("").toUpperCase());
+                    const combinedString = newValue.join("").toUpperCase();
+                    setInputValue([combinedString]);
                   }
                 }}
               />

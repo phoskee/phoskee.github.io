@@ -8,7 +8,7 @@ import { ArrowLeftIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 
 export default function CasellarioAlfanumerico() {
-  const [randomChars, setRandomChars] = useState("");
+  const [randomChars, setRandomChars] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [showRandomChars, setShowRandomChars] = useState(false);
   const [timeoutValue, setTimeoutValue] = useState(2000); // valore di default: 2000 ms
