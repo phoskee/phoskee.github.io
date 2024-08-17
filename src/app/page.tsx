@@ -1,37 +1,81 @@
+"use client";
+import { Button } from "~/components/ui/button";
+import {
+  InstagramLogoIcon,
+  GitHubLogoIcon,
+  CaretSortIcon,
+} from "@radix-ui/react-icons";
+import { Card, CardContent } from "~/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+import { Separator } from "~/components/ui/separator";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "~/components/ui/collapsible";
+import React from "react";
 import Link from "next/link";
-
-export default function HomePage() {
+export default function Index() {
+  const [isOpen, setIsOpen] = React.useState(false);
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-        <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-          Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
-        </h1>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-            href="https://create.t3.gg/en/usage/first-steps"
-            target="_blank"
+    <div className="flex place-items-center min-h-svh">
+      <Card className="w-fit mx-auto p-2">
+        <Avatar className="mx-auto my-5">
+          <AvatarImage src="https://github.com/phoskee.png" />
+          <AvatarFallback>JF</AvatarFallback>
+        </Avatar>
+        <CardContent>
+          <div className="my-2 space-y-1">
+            <h2 className=" text-center text-xl font-semibold sm:text-2xl">
+              Jacopo Foschi
+            </h2>
+            <p className="text-center px-5 text-xs sm:text-base dark:text-gray-400">
+              Digital Dabbler
+            </p>
+          </div>
+        </CardContent>
+        <CardContent>
+          <Collapsible
+            open={isOpen}
+            onOpenChange={setIsOpen}
+            className="w-[200px] space-y-2"
           >
-            <h3 className="text-2xl font-bold">First Steps →</h3>
-            <div className="text-lg">
-              Just the basics - Everything you need to know to set up your
-              database and authentication.
+            <div className="flex items-center justify-between space-x-4 px-4">
+              <h4 className="text-sm font-semibold">Links</h4>
+              <CollapsibleTrigger asChild>
+                <Button variant="ghost" size="sm">
+                  <CaretSortIcon className="h-4 w-4" />
+                  <span className="sr-only">Toggle</span>
+                </Button>
+              </CollapsibleTrigger>
             </div>
+            <CollapsibleContent className="space-y-2">
+              <Link href={"/tools"}>
+                <Button className="w-full">TOOLS</Button>
+              </Link>
+            </CollapsibleContent>
+            <CollapsibleContent className="space-y-2">
+              <Link href={"/projects"}>
+                <Button className="w-full">PROJECTS</Button>
+              </Link>
+            </CollapsibleContent>
+          </Collapsible>
+        </CardContent>
+        <Separator className="my-4" />
+        <CardContent className="flex justify-between">
+          <Link href="https://instagram.com/foschijacopo">
+            <InstagramLogoIcon className=" size-10 m-2" />
           </Link>
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-            href="https://create.t3.gg/en/introduction"
-            target="_blank"
-          >
-            <h3 className="text-2xl font-bold">Documentation →</h3>
-            <div className="text-lg">
-              Learn more about Create T3 App, the libraries it uses, and how to
-              deploy it.
-            </div>
+
+          <CardContent>
+            <Separator orientation="vertical" className="m-2" />
+          </CardContent>
+
+          <Link href="https://github.com/phoskee">
+            <GitHubLogoIcon className=" size-10 m-2" />
           </Link>
-        </div>
-      </div>
-    </main>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
