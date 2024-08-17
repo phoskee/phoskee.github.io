@@ -126,7 +126,7 @@ export default function CasellarioAlfanumerico() {
             max={10000}
             step={100}
             defaultValue={[timeoutValue]}
-            onValueChange={(e) => setTimeoutValue(parseInt(e))}
+            onValueChange={(e) => console.log("VALORE DI",e)}
             className="my-4"
           />
         </div>
@@ -137,7 +137,7 @@ export default function CasellarioAlfanumerico() {
             max={9}
             step={1}
             defaultValue={[numChars]}
-            onValueChange={(e) => setNumChars(parseInt(e))}
+            onValueChange={(e: number[]) => setNumChars(e[0])}
             className="mb-5"
           />
         </div>
