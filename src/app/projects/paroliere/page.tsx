@@ -29,6 +29,8 @@ interface RisultatoRicerca {
   coordinate: number[];
 }
 
+
+
 export default function Index() {
   const [value, setValue] = useState<string>("");
   const [paroleTrovateMap, setParoleTrovateMap] = useState<RisultatoRicerca[]>(
@@ -67,8 +69,8 @@ export default function Index() {
       griglia.push([]);
       for (let j = 0; j < 5; j++) {
         const id = i * 5 + j + 1; // Calcola l'ID incrementale basato sulla posizione
-        const lettera = letters[i * 5 + j].toUpperCase();
-        griglia[i][j] = { id, lettera };
+        const lettera = letters[i * 5 + j]!.toUpperCase();
+        griglia?[i][j] = { id, lettera };
       }
       console.log("griglia creata");
     }
