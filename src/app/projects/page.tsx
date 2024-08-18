@@ -1,23 +1,22 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { Badge } from "~/components/ui/badge";
+
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
-import { Button } from "~/components/ui/button";
+import { Badge } from "~/components/ui/badge";
 
 export default function Index() {
   const progetti = [
     {
-      name: "project-martina",
-      url: "/projects/casellario-alfanumerico",
-      description: "casellario alfanumerico",
+      name: "project-altro",
+      url: "/projects/personali",
+      description: "discover",
       label: "WIP",
     },
     {
@@ -25,13 +24,7 @@ export default function Index() {
       url: "/projects/paroliere",
       description: "paroliere",
       label: "WIP",
-    },
-    {
-      name: "project-martina",
-      url: "/projects/casellario_10",
-      description: "Casellario alfanumerico 10x10",
-      label: "WIP",
-    },
+    },  
     {
       name: "project-puddu",
       url: "/projects/test",

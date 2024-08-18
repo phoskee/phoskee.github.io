@@ -5,7 +5,7 @@ import { ThemeSwitcher } from "~/components/ThemeToggle";
 
 export default function TestPage() {
   return (
-    <div className="flex min-h-dvh flex-col">
+    <div className="flex min-h-dvh flex-col w-full">
       <div className="mx-4 mt-2 flex items-center justify-between">
         <Logo className="" />
         <div>
