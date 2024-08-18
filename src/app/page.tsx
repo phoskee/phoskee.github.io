@@ -15,21 +15,23 @@ import {
 } from "~/components/ui/collapsible";
 import React from "react";
 import Link from "next/link";
+
 export default function Index() {
   const [isOpen, setIsOpen] = React.useState(false);
   return (
-    <div className="flex place-items-center min-h-svh">
-      <Card className="w-fit mx-auto p-2">
+    <div className="flex min-h-svh place-items-center">
+      <Card className="mx-auto w-fit p-2">
         <Avatar className="mx-auto my-5">
           <AvatarImage src="https://github.com/phoskee.png" />
           <AvatarFallback>JF</AvatarFallback>
         </Avatar>
+
         <CardContent>
           <div className="my-2 space-y-1">
-            <h2 className=" text-center text-xl font-semibold sm:text-2xl">
+            <h2 className="text-center text-xl font-semibold sm:text-2xl">
               Jacopo Foschi
             </h2>
-            <p className="text-center px-5 text-xs sm:text-base dark:text-gray-400">
+            <p className="px-5 text-center text-xs dark:text-gray-400 sm:text-base">
               Digital Dabbler
             </p>
           </div>
@@ -64,7 +66,7 @@ export default function Index() {
         <Separator className="my-4" />
         <CardContent className="flex justify-between">
           <Link href="https://instagram.com/foschijacopo">
-            <InstagramLogoIcon className=" size-10 m-2" />
+            <InstagramLogoIcon className="m-2 size-10" />
           </Link>
 
           <CardContent>
@@ -72,7 +74,7 @@ export default function Index() {
           </CardContent>
 
           <Link href="https://github.com/phoskee">
-            <GitHubLogoIcon className=" size-10 m-2" />
+            <GitHubLogoIcon className="m-2 size-10" />
           </Link>
         </CardContent>
       </Card>

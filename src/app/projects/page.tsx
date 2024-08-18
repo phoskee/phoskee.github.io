@@ -8,17 +8,15 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "~/components/ui/collapsible";
-import React, { Children, useState } from "react";
+import React from "react";
 import { Label } from "~/components/ui/label";
 import Link from "next/link";
-import { ChildProcess } from "child_process";
 
-type CopiedState = Record<number, boolean>;
+
 
 
 export default function Index() {
   const [isOpen, setIsOpen] = React.useState<number | null>(null);
-  const [copied, setCopied] = useState<CopiedState>({});
 
   const handleCollapsibleOpen = (collapsibleIndex: number) => {
     setIsOpen((prevIndex) =>
@@ -26,23 +24,7 @@ export default function Index() {
     );
   };
 
-  const copyToClipboard = async (text: string, collapsibleIndex: number) => {
-    if ("clipboard" in navigator) {
-      try {
-        await navigator.clipboard.writeText(text);
-        setCopied((prev) => ({ ...prev, [collapsibleIndex]: true }));
-        setTimeout(
-          () => setCopied((prev) => ({ ...prev, [collapsibleIndex]: false })),
-          3000
-        );
-      } catch (error) {
-        console.error(
-          "Errore durante la copia del testo negli appunti:",
-          error
-        );
-      }
-    }
-  };
+  
 
   return (
     <div className="flex place-items-center min-h-svh">
