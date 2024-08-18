@@ -1,82 +1,56 @@
 "use client";
-
-import { ArrowLeftIcon, CaretSortIcon, CopyIcon } from "@radix-ui/react-icons";
-import { Button } from "~/components/ui/button";
-
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "~/components/ui/collapsible";
 import React from "react";
-import { Label } from "~/components/ui/label";
 import Link from "next/link";
-
-
-
+import { Badge } from "~/components/ui/badge";
 
 export default function Index() {
-  const [isOpen, setIsOpen] = React.useState<number | null>(null);
-
-  const handleCollapsibleOpen = (collapsibleIndex: number) => {
-    setIsOpen((prevIndex) =>
-      prevIndex === collapsibleIndex ? null : collapsibleIndex
-    );
-  };
-
-  
+  const progetti = [
+    {
+      name: "project-martina",
+      url: "/projects/casellario-alfanumerico",
+      description: "casellario alfanumerico",
+      label: "WIP",
+    },
+    {
+      name: "project-arianna",
+      url: "/projects/paroliere",
+      description: "paroliere",
+      label: "WIP",
+    },
+    {
+      name: "project-martina",
+      url: "/projects/casellario_10",
+      description: "Casellario alfanumerico 10x10",
+      label: "WIP",
+    },
+    {
+      name: "project-puddu",
+      url: "/projects/test",
+      description: "Test Landigpage fullbread.dev",
+      label: "Done",
+    },
+  ];
 
   return (
-    <div className="flex place-items-center min-h-svh">
-      <Link href="/" className="place-self-start absolute">
-        <Button className="p-2 m-2" size="icon">
-          <ArrowLeftIcon className=" size-12 " />
-        </Button>
-      </Link>
-
-      <div className="mx-auto min-w-fit border rounded-lg p-5s">
-        <Collapsible
-          open={isOpen === 1}
-          onOpenChange={() => handleCollapsibleOpen(1)}
-          className="w-[350px] space-y-2"
-        >
-          <div className="flex items-center justify-between space-x-4 px-4">
-            <h4 className="text-sm font-semibold">project-martina</h4>
-            <CollapsibleTrigger asChild>
-              <Button variant="ghost" size="sm">
-                <CaretSortIcon className="h-4 w-4" />
-                <span className="sr-only">Toggle</span>
-              </Button>
-            </CollapsibleTrigger>
-          </div>
-          <CollapsibleContent className="space-y-2">
-            <div className="flex rounded-md border px-4 py-2 font-mono text-sm shadow-sm ">
-              <Link className="p-2" href={"/projects/casellario-alfanumerico"}><Button>1x3x3</Button></Link>
-              <Link className="p-2" href={"/projects/casellario_10"}><Button>10x3x3</Button></Link>
+    <div className="flex min-h-dvh items-center justify-center p-4">
+      <div className="grid w-full max-w-6xl grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {progetti.map((progetto) => (
+          <Link key={progetto.name} href={progetto.url} className="group">
+            <div className="flex flex-col overflow-hidden rounded-lg border">
+              <div className="flex flex-col p-6">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-xl font-semibold">{progetto.name}</h4>
+                </div>
+                <p className="mt-2 text-sm text-gray-600">
+                  {progetto.description}
+                </p>
+                <div className="mt-4 flex justify-end">
+                  <Badge className="px-2 py-1 text-xs">{progetto.label}</Badge>
+                </div>
+              </div>
             </div>
-          </CollapsibleContent>
-        </Collapsible>
-        <Collapsible
-          open={isOpen === 2}
-          onOpenChange={() => handleCollapsibleOpen(2)}
-          className="w-[350px] space-y-2"
-        >
-          <div className="flex items-center justify-between space-x-4 px-4">
-            <h4 className="text-sm font-semibold">project-arianna</h4>
-            <CollapsibleTrigger asChild>
-              <Button variant="ghost" size="sm">
-                <CaretSortIcon className="h-4 w-4" />
-                <span className="sr-only">Toggle</span>
-              </Button>
-            </CollapsibleTrigger>
-          </div>
-          <CollapsibleContent className="space-y-2">
-            <div className="flex items-center justify-between rounded-md border px-4 py-2 font-mono text-sm shadow-sm ">
-            <Link className="p-2" href={"/projects/paroliere"}><Button>test-paroliere-wip</Button></Link>
-            <Label>work in progress</Label>
-            </div>
-          </CollapsibleContent>
-        </Collapsible>
+          </Link>
+        ))}
       </div>
     </div>
   );
