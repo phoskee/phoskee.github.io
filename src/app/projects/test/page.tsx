@@ -16,12 +16,12 @@ export default function TestPage() {
         </div>
       </div>
       <div className="grow flex justify-center items-center">
-        <div className="">
+        <div>
           <div className="flex flex-col items-center justify-center">
             <h2 className="font-serif text-5xl font-bold">
               Welcome
             </h2>
-            <TextEffect per="char"  preset="fade" className="my-4 max-w-xl p-4 font-mono">
+            <TextEffect per="char" preset="fade" className="my-4 max-w-xl p-4 font-mono">
             Hi there, I`m a full-stack engineer featuring a glorious full beard.
             Currently focused on web technologies, web products, and UX.
           </TextEffect>
@@ -31,7 +31,7 @@ export default function TestPage() {
               rel="noreferrer"
               className=" "
             >
-              <Button className="btnInner">Learn more</Button>
+              <Button>Learn more</Button>
             </a>
           </div>
         </div>
