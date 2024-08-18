@@ -137,7 +137,7 @@ export default function CasellarioAlfanumerico() {
             max={9}
             step={1}
             defaultValue={[numChars]}
-            onValueChange={(e: number[]) => setNumChars(e[0])}
+            //onValueChange={(e: number[]) => setNumChars(e[0])}
             className="mb-5"
           />
         </div>
