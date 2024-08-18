@@ -5,6 +5,7 @@ import { type Metadata } from "next";
 
 import { ThemeProvider } from "~/components/theme-provider";
 import { Toaster } from "~/components/ui/toaster";
+import Navbar from "~/components/navbar";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -17,15 +18,18 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
-      <body>
+      <body className="flex min-h-dvh flex-col dark:bg-secondaryBlack">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-        
-        {children}
+          <Navbar />
+          <div className="flex grow items-center justify-center">
+            {children}
+          </div>
+
           <Toaster />
         </ThemeProvider>
       </body>
