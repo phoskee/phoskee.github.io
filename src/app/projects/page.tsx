@@ -14,7 +14,7 @@ import { Badge } from "~/components/ui/badge";
 export default function Index() {
   const progetti = [
     {
-      name: "project-altro",
+      name: "phoskee-meteo",
       url: "/projects/personali",
       description: "discover",
       label: "WIP",
