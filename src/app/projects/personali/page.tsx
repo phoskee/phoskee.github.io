@@ -6,7 +6,6 @@ import { Slider } from "~/components/ui/slider";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -22,22 +21,16 @@ const getDynamicDates = (day: number, month: number) => {
   const today = new Date();
 
   // Data di riferimento per la fine (end_date) è il giorno scelto nell'anno corrente
-  const endDate = new Date(today.getFullYear(), month - 1, day);
+  const endDate = new Date(today.getFullYear(), month - 1, day + 1);
 
   // Data di inizio (start_date) è il giorno scelto nel 1940
-  const startDate = new Date(1940, month - 1, day);
+  const startDate = new Date(1940, month - 1, day + 1);
 
   return {
     startDate: formatDate(startDate),
     endDate: formatDate(endDate),
   };
 };
-const chartDataV = [
-  {
-    year: ["2024"],
-    temperature2mMax: ["0"],
-  },
-];
 
 export default function Index() {
   // Stati per il giorno e il mese scelti dall'utente
@@ -49,19 +42,23 @@ export default function Index() {
   const [viewChosenMonth, setViewChosenMonth] = useState<number>(chosenMonth);
   const [risposta, setRisposta] = useState<string>("");
   const [chartData, setChartData] = useState<any[]>([]);
+  const [weatherData, setWeatherData] = useState<any>(null); // Stato per i dati meteorologici fetchati
 
+  // Fetch dei dati solo al caricamento della pagina
   useEffect(() => {
-    const { startDate, endDate } = getDynamicDates(chosenDay, chosenMonth);
+    const { startDate, endDate } = getDynamicDates(1, 1); // Data fissa per il fetch iniziale (ad es. 1 Gennaio)
 
     // Parametri dinamici basati sul giorno e mese scelti
     const params = {
       latitude: 41.89,
       longitude: 12.48,
-      start_date: startDate, // Data dinamica di inizio
-      end_date: endDate, // Data dinamica di fine
+      start_date: startDate,
+      end_date: endDate,
       daily: "temperature_2m_max",
       timezone: "auto",
     };
+
+    console.log("params", params);
 
     const url = "https://archive-api.open-meteo.com/v1/archive";
 
@@ -71,7 +68,7 @@ export default function Index() {
       const utcOffsetSeconds = response.utcOffsetSeconds();
       const daily = response.daily()!;
 
-      const weatherData = {
+      const data = {
         time: Array.from(
           {
             length:
@@ -87,49 +84,57 @@ export default function Index() {
         temperature2mMax: daily.variables(0)!.valuesArray()!,
       };
 
-      const temperaturesByYear = weatherData.time
-        .map((date, index) => {
-          if (
-            date.getDate() === chosenDay &&
-            date.getMonth() === chosenMonth - 1
-          ) {
-            return {
-              year: date.getFullYear().toString(),
-              temperature2mMax: parseFloat(
-                weatherData.temperature2mMax[index],
-              )?.toFixed(1),
-            };
-          }
-          return null;
-        })
-        .filter((entry) => entry !== null);
-
-      setChartData(temperaturesByYear);
-
-      const maxTemperatureEntry = temperaturesByYear.reduce(
-        (max, entry) =>
-          entry!.temperature2mMax > max.temperature2mMax ? entry! : max,
-        temperaturesByYear[0]!,
-      );
-
-      const minTemperatureEntry = temperaturesByYear.reduce(
-        (min, entry) =>
-          entry!.temperature2mMax < min.temperature2mMax ? entry! : min,
-        temperaturesByYear[0]!,
-      );
-
-      const isHottestDay = maxTemperatureEntry.year === endDate.split("-")[0];
-
-      const responseText = `È il giorno più caldo di sempre (per il ${chosenDay}/${chosenMonth})? Considerando la temperatura massima di questo giorno negli ultimi 84 anni, la risposta è: ${isHottestDay ? "Sì" : "No"}. 
-      La temperatura più alta è stata di ${maxTemperatureEntry.temperature2mMax}°C nel ${maxTemperatureEntry.year}, 
-      mentre la temperatura più bassa è stata di ${minTemperatureEntry.temperature2mMax}°C nel ${minTemperatureEntry.year}.`;
-
-      setRisposta(responseText);
+      setWeatherData(data);
     }
 
-    void fetchData();
-  }, [chosenDay, chosenMonth]);
-console.log(chartData);
+    fetchData();
+  }, []);
+
+  // Aggiorna i dati visualizzati in base ai parametri dell'utente
+  useEffect(() => {
+    if (!weatherData) return;
+
+    const { startDate, endDate } = getDynamicDates(chosenDay, chosenMonth);
+
+    const temperaturesByYear = weatherData.time
+      .map((date, index) => {
+        if (
+          date.getDate() === chosenDay &&
+          date.getMonth() === chosenMonth - 1
+        ) {
+          return {
+            year: date.getFullYear().toString(),
+            temperature2mMax: parseFloat(
+              weatherData.temperature2mMax[index],
+            )?.toFixed(1),
+          };
+        }
+        return null;
+      })
+      .filter((entry) => entry !== null);
+
+    setChartData(temperaturesByYear);
+
+    const maxTemperatureEntry = temperaturesByYear.reduce(
+      (max, entry) =>
+        entry!.temperature2mMax > max.temperature2mMax ? entry! : max,
+      temperaturesByYear[0]!,
+    );
+
+    const minTemperatureEntry = temperaturesByYear.reduce(
+      (min, entry) =>
+        entry!.temperature2mMax < min.temperature2mMax ? entry! : min,
+      temperaturesByYear[0]!,
+    );
+
+    const isHottestDay = maxTemperatureEntry.year === endDate.split("-")[0];
+
+    const responseText = `È il giorno più caldo di sempre (per il ${chosenDay}/${chosenMonth})? Considerando la temperatura massima di questo giorno negli ultimi 84 anni, la risposta è: ${isHottestDay ? "Sì" : "No"}. 
+    La temperatura più alta è stata di ${maxTemperatureEntry.temperature2mMax}°C nel ${maxTemperatureEntry.year}, 
+    mentre la temperatura più bassa è stata di ${minTemperatureEntry.temperature2mMax}°C nel ${minTemperatureEntry.year}.`;
+
+    setRisposta(responseText);
+  }, [chosenDay, chosenMonth, weatherData]);
 
   return (
     chartData.length === 0 ? <div>Nessun dato o limite massimo superato</div> :
