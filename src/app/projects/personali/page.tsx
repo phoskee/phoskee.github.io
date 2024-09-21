@@ -52,13 +52,13 @@ export default function Index() {
     const params = {
       latitude: 41.89,
       longitude: 12.48,
-      start_date: startDate,
-      end_date: endDate,
+      start_date: "1940-01-01",
+      end_date: new Date().toISOString().split("T")[0],
       daily: "temperature_2m_max",
       timezone: "auto",
     };
 
-    console.log("params", params);
+    console.log("data", new Date().toISOString().split("T")[0]);
 
     const url = "https://archive-api.open-meteo.com/v1/archive";
 
@@ -85,6 +85,7 @@ export default function Index() {
       };
 
       setWeatherData(data);
+      console.log("data", data);
     }
 
     fetchData();
