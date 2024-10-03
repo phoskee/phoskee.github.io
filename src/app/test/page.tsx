@@ -1,84 +1,62 @@
-import {
-    Activity,
-    Component,
-    DockIcon,
-    HomeIcon,
-    Mail,
-    Package,
-    ScrollText,
-    SunMoon,
-  } from 'lucide-react';
-import { HiddenDock, DockItem, DockLabel } from './dock';
-  
- 
-  
-  const data = [
-    {
-      title: 'Home',
-      icon: (
-        <HomeIcon className='h-full w-full text-neutral-600 dark:text-neutral-300' />
-      ),
-      href: '#',
-    },
-    {
-      title: 'Products',
-      icon: (
-        <Package className='h-full w-full text-neutral-600 dark:text-neutral-300' />
-      ),
-      href: '#',
-    },
-    {
-      title: 'Components',
-      icon: (
-        <Component className='h-full w-full text-neutral-600 dark:text-neutral-300' />
-      ),
-      href: '#',
-    },
-    {
-      title: 'Activity',
-      icon: (
-        <Activity className='h-full w-full text-neutral-600 dark:text-neutral-300' />
-      ),
-      href: '#',
-    },
-    {
-      title: 'Change Log',
-      icon: (
-        <ScrollText className='h-full w-full text-neutral-600 dark:text-neutral-300' />
-      ),
-      href: '#',
-    },
-    {
-      title: 'Email',
-      icon: (
-        <Mail className='h-full w-full text-neutral-600 dark:text-neutral-300' />
-      ),
-      href: '#',
-    },
-    {
-      title: 'Theme',
-      icon: (
-        <SunMoon className='h-full w-full text-neutral-600 dark:text-neutral-300' />
-      ),
-      href: '#',
-    },
-  ];
-  
-  export default function AppleStyleDock() {
-    return (
-      <div className='absolute bottom-2 left-1/2 max-w-full -translate-x-1/2'>
-        <HiddenDock className='items-end pb-3'>
-          {data.map((item, idx) => (
-            <DockItem
-              key={idx}
-              className='aspect-square rounded-full bg-gray-200 dark:bg-neutral-800'
-            >
-              <DockLabel>{item.title}</DockLabel>
-              <DockIcon>{item.icon}</DockIcon>
-            </DockItem>
-          ))}
-        </HiddenDock>
-      </div>
-    );
-  }
-  
+"use client"; // Indica che il componente deve essere eseguito nel client
+
+import React, { useEffect, useState } from "react";
+
+export default function Grid50x50() {
+  const gridSize = 50; // Dimensione della griglia
+  const [position, setPosition] = useState({ x: 0, y: 0 }); // Posizione iniziale del quadratino
+  const speed = 1; // Velocità del movimento
+
+  const squares = Array.from({ length: gridSize * gridSize }, (_, i) => i + 1);
+
+  // Funzione per gestire la pressione dei tasti
+  const handleKeyDown = (e) => {
+    setPosition((prevPosition) => {
+      const newPosition = { ...prevPosition };
+      switch (e.key) {
+        case "ArrowUp":
+          if (newPosition.y > 0) newPosition.y -= 1; // Muovi verso l'alto
+          break;
+        case "ArrowDown":
+          if (newPosition.y < gridSize - 1) newPosition.y += 1; // Muovi verso il basso
+          break;
+        case "ArrowLeft":
+          if (newPosition.x > 0) newPosition.x -= 1; // Muovi verso sinistra
+          break;
+        case "ArrowRight":
+          if (newPosition.x < gridSize - 1) newPosition.x += 1; // Muovi verso destra
+          break;
+        default:
+          break;
+      }
+      console.log(newPosition);
+      return newPosition;
+    });
+  };
+
+  // Aggiungi l'event listener per la pressione dei tasti quando il componente è montato
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Pulisci l'event listener quando il componente è smontato
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
+  return (
+    <div className="grid-cols-50 grid gap-0">
+      {squares.map((item, idx) => {
+        const isActive =
+          position.x === idx % gridSize &&
+          position.y === Math.floor(idx / gridSize);
+        return (
+          <div
+            className={`size-2 ${isActive ? "bg-red-300" : "bg-gray-300"}`}
+            key={idx}
+          ></div>
+        );
+      })}
+    </div>
+  );
+}

@@ -20,7 +20,7 @@ const config = {
     extend: {
       gridTemplateColumns: {
         // Simple 16 column grid
-        '29': 'repeat(29, minmax(0, 1fr))',
+        '50': 'repeat(50, minmax(0, 1fr))',
       },
       
       borderRadius: {
