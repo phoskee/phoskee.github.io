@@ -31,6 +31,12 @@ export default function Index() {
       description: "Test Landigpage fullbread.dev",
       label: "Done",
     },
+    {
+      name: "project-qrcode",
+      url: "/projects/qrcode",
+      description: "simple qrcode generator",
+      label: "WIP",
+    },
   ];
 
   return (
