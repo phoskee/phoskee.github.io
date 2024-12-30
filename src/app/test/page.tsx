@@ -1,105 +1,120 @@
 "use client";
 
+import { Progress } from "@radix-ui/react-progress";
+import { Input } from "~/components/ui-clean/input";
 import { useState, useEffect } from "react";
-import { CardContent } from "~/components/ui-clean/card";
-import { Button } from "~/components/ui/button";
-import { Card, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
-import { Input } from "~/components/ui/input";
-import { ScrollArea } from "~/components/ui/scroll-area";
+import { Button } from "~/components/ui-clean/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui-clean/card";
+import { toast } from "~/components/ui-clean/use-toast";
 
-interface Cookie {
-  name: string;
-  value: string;
-  expires?: string;
-}
 
-export default function CookieViewer() {
-  const [cookies, setCookies] = useState<Cookie[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
+export default function GuessingGame() {
+  const [secretNumber, setSecretNumber] = useState<number>(0);
+  const [guess, setGuess] = useState<string>("");
+  const [attempts, setAttempts] = useState<number>(0);
+  const [hint, setHint] = useState<string>("");
+  const [gameWon, setGameWon] = useState<boolean>(false);
 
-  const getAllCookies = () => {
-    // NOTA: Questo metodo può accedere solo ai cookie non-HttpOnly
-    const cookieList = document.cookie.split(";");
-    const parsedCookies = cookieList
-      .map((cookie) => {
-        const [name = "", value = ""] = cookie.trim().split("=");
-        return { name, value };
-      })
-      .filter((cookie) => cookie.name !== "");
-    setCookies(parsedCookies);
-  };
 
-  const createTestCookie = () => {
-    const now = new Date();
-    document.cookie = `testCookie_${now.getTime()}=valore_${Math.random().toString(36).substring(7)}`;
-    window.location.reload();
-  };
+  const maxAttempts = 10;
 
   useEffect(() => {
-    getAllCookies();
+    startNewGame();
   }, []);
 
-  const filteredCookies = cookies.filter(
-    (cookie) =>
-      cookie.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      cookie.value.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+  const startNewGame = () => {
+    setSecretNumber(Math.floor(Math.random() * 100) + 1);
+    setAttempts(0);
+    setGuess("");
+    setHint("");
+    setGameWon(false);
+  };
+
+  const handleGuess = () => {
+    const guessNumber = parseInt(guess);
+
+    if (isNaN(guessNumber)) {
+      toast({
+        variant: "destructive",
+        title: "Errore!",
+        description: "Inserisci un numero valido!",
+      });
+      return;
+    }
+
+    setAttempts((prev) => prev + 1);
+
+    if (guessNumber === secretNumber) {
+      setGameWon(true);
+      toast({
+        title: "Congratulazioni! 🎉",
+        description: `Hai indovinato in ${attempts + 1} tentativi!`,
+      });
+    } else if (guessNumber < secretNumber) {
+      setHint("Troppo basso!");
+    } else {
+      setHint("Troppo alto!");
+    }
+  };
 
   return (
-    <Card className="m-2">
-      <CardHeader className="mx-auto max-w-4xl">
-        <CardTitle>Cookie Explorer 🍪</CardTitle>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-4">
-        <Input
-          type="text"
-          placeholder="Cerca cookie..."
-          className="flex-1 p-2"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+    <div className="container flex min-h-screen items-center justify-center">
+      <Card className="w-[350px]">
+        <CardHeader>
+          <CardTitle>Indovina il Numero</CardTitle>
+          <CardDescription>
+            Indovina un numero tra 1 e 100. Hai {maxAttempts - attempts}{" "}
+            tentativi rimasti!
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Progress value={(attempts / maxAttempts) * 100} />
 
-        <div className="overflow-hidden rounded-xl shadow-lg p-2 border-2 border-primary">
-          <div>
-            {filteredCookies.length === 0 ? (
-              <div className="text-center">Nessun cookie trovato</div>
-            ) : (
-              <ScrollArea className="h-[50svh]">
-                {filteredCookies.map((cookie, index) => (
-                  <div key={index} className="p-2 transition-colors">
-                    <div className="flex flex-col items-start justify-between gap-4 md:flex-row">
-                      <div>
-                        <h3 className="text-lg font-medium text-wrap">
-                          {cookie.name}
-                        </h3>
-                        <p className="break-all text-sm">{cookie.value}</p>
-                      </div>
-                      <Button
-                        onClick={() => {
-                          document.cookie = `${cookie.name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-                          getAllCookies();
-                        }}
-                        className="text-sm"
-                        variant="reverse"
-                      >
-                        Elimina
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </ScrollArea>
+          <div className="space-y-2">
+            <Input
+              type="number"
+              placeholder="Inserisci un numero..."
+              value={guess}
+              onChange={(e) => setGuess(e.target.value)}
+              disabled={gameWon || attempts >= maxAttempts}
+            />
+
+            {hint && (
+              <p
+                className={`text-sm font-medium ${
+                  hint === "Troppo alto!" ? "text-red-500" : "text-blue-500"
+                }`}
+              >
+                {hint}
+              </p>
             )}
           </div>
-        </div>
-        {/* Stats */}
-        <div className="mt-4 text-sm text-muted ">
-          Totale cookie: {filteredCookies.length} - Questo metodo può accedere
-          solo ai cookie non-HttpOnly
-        </div>
-      </CardContent>
-      <CardFooter>
-        <Button onClick={createTestCookie}>Crea un cookie di prova</Button>
-      </CardFooter>
-    </Card>
+
+          <div className="space-x-2">
+            <Button
+              onClick={handleGuess}
+              disabled={gameWon || attempts >= maxAttempts}
+            >
+              Prova
+            </Button>
+            <Button variant="outline" onClick={startNewGame}>
+              Nuova Partita
+            </Button>
+          </div>
+
+          {gameWon && (
+            <p className="text-center font-medium text-green-500">
+              Hai vinto! 🎉
+            </p>
+          )}
+
+          {attempts >= maxAttempts && !gameWon && (
+            <p className="text-center font-medium text-red-500">
+              Game Over! Il numero era {secretNumber}
+            </p>
+          )}
+        </CardContent>
+      </Card>
+    </div>
   );
 }

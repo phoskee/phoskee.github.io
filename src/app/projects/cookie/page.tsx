@@ -46,7 +46,7 @@ export default function CookieViewer() {
   );
 
   return (
-    <Card className="m-2">
+    <Card className="mx-2">
       <CardHeader className="mx-auto max-w-4xl">
         <CardTitle>Cookie Explorer 🍪</CardTitle>
       </CardHeader>
