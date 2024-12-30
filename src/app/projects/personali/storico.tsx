@@ -21,6 +21,7 @@ import {
 interface ChartData {
   year: string;
   temperature2mMax: number;
+  temperature2mMin: number;
 }
 
 
@@ -32,6 +33,7 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export function Storico({ chartData }: { chartData: ChartData[] }) {
+  console.log(chartData);
   return (
 
         <ChartContainer config={chartConfig} >

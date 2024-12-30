@@ -37,6 +37,12 @@ export default function Index() {
       description: "simple qrcode generator",
       label: "WIP",
     },
+    {
+      name: "project-cookie",
+      url: "/projects/cookie",
+      description: "cookie viewer",
+      label: "Done",
+    },
   ];
 
   return (

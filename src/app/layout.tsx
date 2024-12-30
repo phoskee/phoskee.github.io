@@ -18,7 +18,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
-      <body className="flex min-h-dvh flex-col dark:bg-secondaryBlack">
+      <body className="flex min-h-svh flex-col dark:bg-secondaryBlack">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
