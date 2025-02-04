@@ -35,6 +35,14 @@ export default function CookieViewer() {
     window.location.reload();
   };
 
+  const deleteCookie = (cookieName: string) => {
+    // Prova diversi percorsi comuni per assicurarsi che il cookie venga eliminato
+    document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/projects/cookie;`;
+    document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC;`;
+    getAllCookies(); // Aggiorna la lista dei cookie
+  };
+
   useEffect(() => {
     getAllCookies();
   }, []);
@@ -75,10 +83,7 @@ export default function CookieViewer() {
                         <p className="break-all text-sm">{cookie.value}</p>
                       </div>
                       <Button
-                        onClick={() => {
-                          document.cookie = `${cookie.name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-                          getAllCookies();
-                        }}
+                        onClick={() => deleteCookie(cookie.name)}
                         className="text-sm"
                         variant="reverse"
                       >
