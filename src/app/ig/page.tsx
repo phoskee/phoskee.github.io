@@ -24,10 +24,40 @@ const features = [
     icon: "🫂"
   },
   {
-    title: "Analisi Interazioni",
-    description: "Analizza le interazioni con i tuoi contenuti",
-    link: "/ig/interactions",
-    icon: "📊"
+    title: "Richieste di Follow Ricevute",
+    description: "Visualizza le richieste di follow che hai ricevuto",
+    link: "/ig/received-requests",
+    icon: "📥"
+  },
+  {
+    title: "Profili Bloccati",
+    description: "Elenco dei profili che hai bloccato",
+    link: "/ig/blocked",
+    icon: "🚫"
+  },
+  {
+    title: "Amici Stretti",
+    description: "Lista dei tuoi amici stretti su Instagram",
+    link: "/ig/close-friends",
+    icon: "💚"
+  },
+  {
+    title: "Profili Non Seguiti",
+    description: "Elenco dei profili che hai smesso di seguire recentemente",
+    link: "/ig/unfollowed",
+    icon: "👋"
+  },
+  {
+    title: "Profili con Restrizioni",
+    description: "Visualizza i profili a cui hai applicato delle restrizioni",
+    link: "/ig/restricted",
+    icon: "🔒"
+  },
+  {
+    title: "Suggerimenti Rimossi",
+    description: "Lista dei suggerimenti di profili che hai rimosso",
+    link: "/ig/removed-suggestions",
+    icon: "❌"
   }
 ]
 
@@ -39,7 +69,7 @@ export default function Page() {
         <p className="text-xl text-gray-600">Esplora e analizza i tuoi dati Instagram</p>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {features.map((feature, index) => (
           <Card key={index} className="hover:shadow-lg transition-shadow duration-300">
             <Link href={feature.link} className="block h-full">
