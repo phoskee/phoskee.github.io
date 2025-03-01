@@ -2,26 +2,30 @@
 
 import { Moon, Sun } from 'lucide-react'
 import { useTheme } from 'next-themes'
-
 import * as React from 'react'
-
-import { Button } from '~/components/ui/button'
 import { Switch } from './ui/switch'
 
 export function ThemeSwitcher() {
-  const { setTheme, theme } = useTheme()
+  const { setTheme, theme, systemTheme } = useTheme()
+  const [mounted, setMounted] = React.useState(false)
+
+  // Monta il componente solo lato client
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Non renderizzare nulla durante il server-side rendering
+  if (!mounted) {
+    return null
+  }
+
+  const isDark = theme === 'dark' || (theme === 'system' && systemTheme === 'dark')
 
   return (
-    <>
-      {/* <Button
-        className="h-11 w-11 m500:h-9 m500:w-9 p-0 shadow-nav dark:shadow-navDark hover:!translate-x-[3px] hover:!translate-y-[3px] hover:!shadow-none dark:hover:shadow-none !bg-white dark:!bg-secondaryBlack"
-        onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-      >
-        <Sun className="h-6 w-6 m500:h-4 m500:w-4 hidden dark:inline stroke-darkText" />
-        <Moon className="h-6 w-6 m500:h-4 m500:w-4 inline dark:hidden stroke-text" />
-        <span className="sr-only">Toggle theme</span>
-      </Button> */}
-      <Switch checked={theme === 'dark'} onCheckedChange={() => setTheme(theme === 'light' ? 'dark' : 'light')} />
-    </>
+    <Switch 
+      checked={isDark}
+      onCheckedChange={(checked) => setTheme(checked ? 'dark' : 'light')}
+      aria-label="Toggle dark mode"
+    />
   )
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { CardContent } from "~/components/ui-clean/card";
+import { CardContent } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
 import { Card, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
@@ -85,7 +85,7 @@ export default function CookieViewer() {
                       <Button
                         onClick={() => deleteCookie(cookie.name)}
                         className="text-sm"
-                        variant="reverse"
+                        variant="destructive"
                       >
                         Elimina
                       </Button>
