@@ -1,11 +1,11 @@
 "use client";
 
 import { Progress } from "@radix-ui/react-progress";
-import { Input } from "~/components/ui-clean/input";
+import { Input } from "~/components/ui/input";
 import { useState, useEffect } from "react";
-import { Button } from "~/components/ui-clean/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui-clean/card";
-import { toast } from "~/components/ui-clean/use-toast";
+import { Button } from "~/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
+import { toast } from "~/components/ui/use-toast";
 
 
 export default function GuessingGame() {
