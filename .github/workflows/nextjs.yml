@@ -36,7 +36,7 @@ jobs:
         with:
           bun-version: latest
       - run: bun install
-      - run: bun index.ts
+      
       - run: bun run build
       - name: Setup Pages
         uses: actions/configure-pages@v5
