@@ -32,13 +32,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Set up Bun
-        uses: oven-sh/setup-bun@v1
+        uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
-      - name: Install deps
-        run: bun install
-      - name: Build
-        run: bun run build
+      - run: bun install
+      - run: bun index.ts
+      - run: bun run build
       - name: Setup Pages
         uses: actions/configure-pages@v5
         with:
