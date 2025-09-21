@@ -4,11 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import linkGroups from "@/data/link-groups.json";
 
-type LinkGroup = {
-  id: string;
-  label: string;
-  links: LinkPreviewData[];
-};
+type LinkGroup = { id: string; label: string; links: LinkPreviewData[] };
 
 const groups = linkGroups as LinkGroup[];
 

@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { fetchWeatherApi } from "openmeteo";
 import { Storico } from "./storico";
 import { Slider } from "~/components/ui/slider";
 import {
@@ -60,50 +59,39 @@ export default function Index() {
 
   // Fetch dei dati solo al caricamento della pagina
   useEffect(() => {
-    const { startDate, endDate } = getDynamicDates(1, 1);
-
-    const params = {
-      latitude: 41.89,
-      longitude: 12.48,
-      start_date: "1940-01-01",
-      end_date: new Date().toISOString().split("T")[0],
-      daily: "temperature_2m_max",
-      timezone: "auto",
-    };
-
-    const url = "https://archive-api.open-meteo.com/v1/archive";
-
     async function fetchData() {
       try {
-        const responses = await fetchWeatherApi(url, params);
-        const response = responses[0];
-        if (response) {
-          const utcOffsetSeconds = response.utcOffsetSeconds();
-          const daily = response.daily()!;
+        const searchParams = new URLSearchParams({
+          latitude: "41.89",
+          longitude: "12.48",
+          start_date: "1940-01-01",
+          end_date: new Date().toISOString().split("T")[0],
+          daily: "temperature_2m_max,temperature_2m_min",
+          timezone: "auto",
+        });
 
-          const data = {
-            time: Array.from(
-              {
-                length:
-                  (Number(daily.timeEnd()) - Number(daily.time())) /
-                  daily.interval(),
-              },
-              (_, i) =>
-                new Date(
-                  (Number(daily.time()) +
-                    i * daily.interval() +
-                    utcOffsetSeconds) *
-                    1000,
-                ),
-            ),
-            temperature2mMax: Array.from(daily.variables(0)!.valuesArray()!),
-            temperature2mMin: Array.from(daily.variables(1)!.valuesArray()!),
-          };
+        const response = await fetch(
+          `https://archive-api.open-meteo.com/v1/archive?${searchParams.toString()}`,
+        );
 
-          setWeatherData(data);
-        } else {
-          console.error("Nessuna risposta valida ricevuta.");
+        if (!response.ok) {
+          throw new Error(`Request failed with status ${response.status}`);
         }
+
+        const json = await response.json();
+        const daily = json.daily ?? {};
+
+        if (!daily.time || !daily.temperature_2m_max || !daily.temperature_2m_min) {
+          throw new Error("Unexpected response format from Open Meteo API");
+        }
+
+        const data = {
+          time: (daily.time as string[]).map((iso: string) => new Date(iso)),
+          temperature2mMax: daily.temperature_2m_max as number[],
+          temperature2mMin: daily.temperature_2m_min as number[],
+        };
+
+        setWeatherData(data);
       } catch (error) {
         console.error("Errore nel fetch dei dati meteorologici:", error);
       }
@@ -116,7 +104,7 @@ export default function Index() {
   useEffect(() => {
     if (!weatherData) return;
 
-    const { startDate, endDate } = getDynamicDates(chosenDay, chosenMonth);
+    const { endDate } = getDynamicDates(chosenDay, chosenMonth);
 
     if (!endDate) {
       console.error("endDate è undefined.");
@@ -150,15 +138,20 @@ export default function Index() {
 
     setChartData(temperaturesByYear);
 
+    if (!temperaturesByYear.length) {
+      setRisposta("Nessun dato storico disponibile per il giorno selezionato.");
+      return;
+    }
+
     const maxTemperatureEntry = temperaturesByYear.reduce(
       (max, entry) =>
-        entry!.temperature2mMax > max.temperature2mMax ? entry! : max,
+        entry.temperature2mMax > max.temperature2mMax ? entry : max,
       temperaturesByYear[0]!,
     );
 
     const minTemperatureEntry = temperaturesByYear.reduce(
       (min, entry) =>
-        entry!.temperature2mMax < min.temperature2mMax ? entry! : min,
+        entry.temperature2mMin < min.temperature2mMin ? entry : min,
       temperaturesByYear[0]!,
     );
 
@@ -169,7 +162,7 @@ export default function Index() {
 
     const responseText = `È il giorno più ${season === "estate" ? "caldo" : "freddo"} di sempre (per il ${chosenDay}/${chosenMonth})? Considerando la temperatura massima di questo giorno negli ultimi 84 anni, la risposta è: ${isExtremeDay ? "Sì" : "No"}. 
     La temperatura più alta è stata di ${Math.round(maxTemperatureEntry.temperature2mMax)}°C nel ${maxTemperatureEntry.year}, 
-    mentre la temperatura più bassa è stata di ${Math.round(minTemperatureEntry.temperature2mMax)}°C nel ${minTemperatureEntry.year}.`;
+    mentre la temperatura più bassa è stata di ${Math.round(minTemperatureEntry.temperature2mMin)}°C nel ${minTemperatureEntry.year}.`;
 
     setRisposta(responseText);
   }, [chosenDay, chosenMonth, weatherData, season]);

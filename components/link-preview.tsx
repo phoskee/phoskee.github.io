@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type SVGProps } from "react";
 import Image from "next/image";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Copy, Check, ExternalLink } from "lucide-react";
 
@@ -26,7 +25,6 @@ type LinkPreviewProps = {
 
 export function LinkPreview({ link }: LinkPreviewProps) {
   const [copied, setCopied] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
 
   const domain = (() => {
     try {
@@ -63,7 +61,6 @@ export function LinkPreview({ link }: LinkPreviewProps) {
               alt={link.title}
               fill
               className="rounded-lg object-cover"
-              onLoad={() => setImageLoaded(true)}
             />
 
             <div className="absolute top-2 right-2 opacity-0 transition-opacity hover:opacity-100">
@@ -131,7 +128,7 @@ export function LinkPreview({ link }: LinkPreviewProps) {
   );
 }
 
-export const Icon = ({ className, ...rest }: any) => {
+export const Icon = ({ className, ...rest }: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
