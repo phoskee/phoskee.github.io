@@ -32,6 +32,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { ThemeSwitcher } from "./ThemeToggle";
 
 // Navigation links with icons for desktop icon-only navigation
 const navigationLinks = [
@@ -163,7 +164,7 @@ export default function NavBar() {
           {/* Theme toggle */}
           {/* <ThemeToggle /> */}
           {/* User menu */}
-          IO
+          <ThemeSwitcher />
         </div>
       </div>
     </header>

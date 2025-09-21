@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import NavBar from "@/components/nav-bar";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,18 +27,25 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="it_IT" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} min-h-svh grid-rows-[20px_1fr] items-center justify-items-center font-sans antialiased`}
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
       >
-        <nav className="row-start-1">
-          <NavBar />
-        </nav>
-        <main className="row-start-2 flex items-center gap-[32px] p-2 sm:items-start">
-          {children}
-        </main>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} min-h-svh grid-rows-[20px_1fr] items-center justify-items-center font-sans antialiased`}
+        >
+          <nav className="row-start-1">
+            <NavBar />
+          </nav>
+          <main className="row-start-2 flex items-center gap-[32px] p-2 sm:items-start">
+            {children}
+          </main>
 
-        <Toaster position="top-right" richColors />
-      </body>
+          <Toaster position="top-right" richColors />
+        </body>
+      </ThemeProvider>
     </html>
   );
 }

@@ -23,7 +23,7 @@ export default function Page() {
       {groups.map(({ id, links }) => (
         <TabsContent key={id} value={id}>
           <ScrollArea className="h-[85svh] w-[95svw] rounded-md p-2">
-            <div className="grid grid-cols-1 gap-4 p-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+            <div className="grid grid-cols-1 gap-4 p-2 md:grid-cols-2 xl:grid-cols-4">
               {links.map((link) => (
                 <LinkPreview key={link.url} link={link} />
               ))}

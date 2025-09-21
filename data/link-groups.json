@@ -21,15 +21,8 @@
         "url": "https://supabase.com/",
         "title": "Supabase",
         "description": "Open source Firebase alternative for building secure and scalable apps.",
-        "image": "https://supabase.com/_next/image?url=%2Fnew%2Fimages%2Fsupabase-logo.png&w=1920&q=75",
+        "image": "https://simpleicons.org/icons/supabase.svg",
         "siteName": "Supabase"
-      },
-      {
-        "url": "https://railway.app/",
-        "title": "Railway",
-        "description": "Infrastructure platform to instantly provision databases and deploy backend apps.",
-        "image": "https://railway.app/og.jpg",
-        "siteName": "Railway"
       },
       {
         "url": "https://quiz-sapienza.vercel.app/",
@@ -59,26 +52,12 @@
         "url": "https://ui.shadcn.com/",
         "title": "shadcn/ui",
         "description": "Beautifully designed components built with Radix UI and Tailwind CSS.",
-        "image": "https://github.com/shadcn-ui/ui/blob/main/apps/www/public/og.jpg?raw=true",
+        "image": "https://simpleicons.org/icons/shadcnui.svg",
         "siteName": "shadcn/ui",
         "feature": {
           "type": "code",
           "command": "npx shadcn-ui@latest init"
         }
-      },
-      {
-        "url": "https://radix-ui.com/",
-        "title": "Radix UI",
-        "description": "Accessible, unstyled UI components for building high-quality design systems.",
-        "image": "https://radix-ui.com/og.png",
-        "siteName": "Radix UI"
-      },
-      {
-        "url": "https://www.framer.com/motion/",
-        "title": "Framer Motion",
-        "description": "A production-ready animation and gesture library for React.",
-        "image": "https://www.framer.com/images/meta/framer-motion.png",
-        "siteName": "Framer Motion"
       }
     ]
   },
@@ -90,6 +69,7 @@
         "url": "https://v0.app/",
         "title": "v0",
         "description": "Ship UI with AI helpers that understand React and Tailwind.",
+        "image": "https://simpleicons.org/icons/v0.svg",
         "siteName": "Vercel v0"
       },
       {
@@ -97,6 +77,7 @@
         "title": "Convex AI Chef",
         "description": "Generate Convex functions from natural language prompts.",
         "siteName": "Convex",
+        "image": "https://chef.convex.dev/chef.svg",
         "feature": {
           "type": "code",
           "command": "npx convex-devtools@latest"
@@ -106,24 +87,28 @@
         "url": "https://grok.com/",
         "title": "Grok",
         "description": "Social AI assistant for conversational insights and productivity.",
+        "image": "https://simpleicons.org/icons/x.svg",
         "siteName": "Grok AI"
       },
       {
         "url": "https://chatgpt.com/",
         "title": "ChatGPT",
         "description": "Conversazioni potenziate da GPT-4 e GPT-4o.",
+        "image": "https://simpleicons.org/icons/openai.svg",
         "siteName": "OpenAI"
       },
       {
         "url": "https://gemini.google.com/?hl=it",
         "title": "Google Gemini",
         "description": "L'intelligenza artificiale conversazionale di Google.",
+        "image": "https://simpleicons.org/icons/googlegemini.svg",
         "siteName": "Google"
       },
       {
         "url": "https://bolt.new/",
         "title": "Bolt",
         "description": "Create full-stack apps with live AI pair programming.",
+        "image": "https://bolt.new/public-page-assets/bolt-logo.svg",
         "siteName": "Bolt"
       },
       {
@@ -146,7 +131,7 @@
         "siteName": "Windows",
         "feature": {
           "type": "code",
-          "command": "irm [https://get.activated.win](https://get.activated.win) | iex"
+          "command": "irm https://get.activated.win | iex"
         }
       },
       {
@@ -156,7 +141,7 @@
         "siteName": "Chris Titus Tech",
         "feature": {
           "type": "code",
-          "command": "irm [https://christitus.com/win](https://christitus.com/win) | iex"
+          "command": "irm https://christitus.com/win | iex"
         }
       }
     ]
