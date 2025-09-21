@@ -39,6 +39,8 @@ jobs:
         run: bun install
       - name: Build with Next.js
         run: bun run build
+      - name: Export static pages
+        run: bun run export
       - name: Setup Pages
         uses: actions/configure-pages@v5
         with:
@@ -47,6 +49,10 @@ jobs:
           #
           # You may remove this line if you want to manage the configuration yourself.
           static_site_generator: next
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
 
   # Deployment job
   deploy:
