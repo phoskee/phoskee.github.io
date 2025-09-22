@@ -1,149 +1,161 @@
-[
-  {
-    "id": "hosting",
-    "label": "Hosting & Backend",
-    "links": [
-      {
-        "url": "https://vercel.com/",
-        "title": "Vercel",
-        "description": "Develop, preview, and ship web experiences faster with Vercel.",
-        "image": "https://assets.vercel.com/image/upload/contentful/image/e5382hct74si/4JmubmYDJnFtstwHbaZPev/0c3576832aae5b1a4d98c8c9f98863c3/Vercel_Home_OG.png",
-        "siteName": "Vercel"
-      },
-      {
-        "url": "https://www.convex.dev/",
-        "title": "Convex",
-        "description": "The full-stack TypeScript platform with a reactive database and serverless execution.",
-        "image": "https://www.convex.dev/api/og?title=The%20backend%20platform%20that%20keeps%20your%20app%20in%20sync",
-        "siteName": "Convex"
-      },
-      {
-        "url": "https://supabase.com/",
-        "title": "Supabase",
-        "description": "Open source Firebase alternative for building secure and scalable apps.",
-        "image": "https://simpleicons.org/icons/supabase.svg",
-        "siteName": "Supabase"
-      },
-      {
-        "url": "https://quiz-sapienza.vercel.app/",
-        "title": "Quiz Sapienza",
-        "description": "Un semplice quiz interattivo per studenti Sapienza.",
-        "image": "https://quiz-sapienza.vercel.app/og-image.png",
-        "siteName": "Quiz Sapienza"
+{
+  "rootItemId": "resources",
+  "items": {
+    "resources": {
+      "label": "Resources",
+      "children": ["hosting-backend", "design", "ai", "tools"]
+    },
+    "hosting-backend": {
+      "label": "Hosting & Backend",
+      "children": [
+        "hosting-vercel",
+        "hosting-convex",
+        "hosting-supabase",
+        "hosting-quiz-sapienza"
+      ]
+    },
+    "hosting-vercel": {
+      "label": "Vercel",
+      "url": "https://vercel.com/",
+      "description": "Develop, preview, and ship web experiences faster with Vercel.",
+      "image": "https://assets.vercel.com/image/upload/contentful/image/e5382hct74si/4JmubmYDJnFtstwHbaZPev/0c3576832aae5b1a4d98c8c9f98863c3/Vercel_Home_OG.png",
+      "siteName": "Vercel"
+    },
+    "hosting-convex": {
+      "label": "Convex",
+      "url": "https://www.convex.dev/",
+      "description": "The full-stack TypeScript platform with a reactive database and serverless execution.",
+      "image": "https://www.convex.dev/api/og?title=The%20backend%20platform%20that%20keeps%20your%20app%20in%20sync",
+      "siteName": "Convex"
+    },
+    "hosting-supabase": {
+      "label": "Supabase",
+      "url": "https://supabase.com/",
+      "description": "Open source Firebase alternative for building secure and scalable apps.",
+      "image": "https://simpleicons.org/icons/supabase.svg",
+      "siteName": "Supabase"
+    },
+    "hosting-quiz-sapienza": {
+      "label": "Quiz Sapienza",
+      "url": "https://quiz-sapienza.vercel.app/",
+      "description": "Un semplice quiz interattivo per studenti Sapienza.",
+      "image": "https://quiz-sapienza.vercel.app/og-image.png",
+      "siteName": "Quiz Sapienza"
+    },
+    "design": {
+      "label": "Design",
+      "children": ["design-tailwind", "design-shadcn"]
+    },
+    "design-tailwind": {
+      "label": "Tailwind CSS",
+      "url": "https://tailwindcss.com/",
+      "description": "A utility-first CSS framework for rapidly building custom designs.",
+      "image": "https://tailwindcss.com/_next/static/media/tailwindcss-mark.d52e9897.svg",
+      "siteName": "Tailwind CSS",
+      "feature": {
+        "type": "code",
+        "command": "npx tailwindcss init -p"
       }
-    ]
-  },
-  {
-    "id": "design",
-    "label": "Design",
-    "links": [
-      {
-        "url": "https://tailwindcss.com/",
-        "title": "Tailwind CSS",
-        "description": "A utility-first CSS framework for rapidly building custom designs.",
-        "image": "https://tailwindcss.com/_next/static/media/tailwindcss-mark.d52e9897.svg",
-        "siteName": "Tailwind CSS",
-        "feature": {
-          "type": "code",
-          "command": "npx tailwindcss init -p"
-        }
-      },
-      {
-        "url": "https://ui.shadcn.com/",
-        "title": "shadcn/ui",
-        "description": "Beautifully designed components built with Radix UI and Tailwind CSS.",
-        "image": "https://simpleicons.org/icons/shadcnui.svg",
-        "siteName": "shadcn/ui",
-        "feature": {
-          "type": "code",
-          "command": "npx shadcn-ui@latest init"
-        }
+    },
+    "design-shadcn": {
+      "label": "shadcn/ui",
+      "url": "https://ui.shadcn.com/",
+      "description": "Beautifully designed components built with Radix UI and Tailwind CSS.",
+      "image": "https://simpleicons.org/icons/shadcnui.svg",
+      "siteName": "shadcn/ui",
+      "feature": {
+        "type": "code",
+        "command": "npx shadcn-ui@latest init"
       }
-    ]
-  },
-  {
-    "id": "ai",
-    "label": "AI",
-    "links": [
-      {
-        "url": "https://v0.app/",
-        "title": "v0",
-        "description": "Ship UI with AI helpers that understand React and Tailwind.",
-        "image": "https://simpleicons.org/icons/v0.svg",
-        "siteName": "Vercel v0"
-      },
-      {
-        "url": "https://chef.convex.dev/",
-        "title": "Convex AI Chef",
-        "description": "Generate Convex functions from natural language prompts.",
-        "siteName": "Convex",
-        "image": "https://chef.convex.dev/chef.svg",
-        "feature": {
-          "type": "code",
-          "command": "npx convex-devtools@latest"
-        }
-      },
-      {
-        "url": "https://grok.com/",
-        "title": "Grok",
-        "description": "Social AI assistant for conversational insights and productivity.",
-        "image": "https://simpleicons.org/icons/x.svg",
-        "siteName": "Grok AI"
-      },
-      {
-        "url": "https://chatgpt.com/",
-        "title": "ChatGPT",
-        "description": "Conversazioni potenziate da GPT-4 e GPT-4o.",
-        "image": "https://simpleicons.org/icons/openai.svg",
-        "siteName": "OpenAI"
-      },
-      {
-        "url": "https://gemini.google.com/?hl=it",
-        "title": "Google Gemini",
-        "description": "L'intelligenza artificiale conversazionale di Google.",
-        "image": "https://simpleicons.org/icons/googlegemini.svg",
-        "siteName": "Google"
-      },
-      {
-        "url": "https://bolt.new/",
-        "title": "Bolt",
-        "description": "Create full-stack apps with live AI pair programming.",
-        "image": "https://bolt.new/public-page-assets/bolt-logo.svg",
-        "siteName": "Bolt"
-      },
-      {
-        "url": "https://huggingface.co/",
-        "title": "Hugging Face",
-        "description": "Community-driven platform for machine learning models and datasets.",
-        "image": "https://huggingface.co/front/assets/huggingface_logo.svg",
-        "siteName": "Hugging Face"
+    },
+    "ai": {
+      "label": "AI",
+      "children": [
+        "ai-v0",
+        "ai-convex-chef",
+        "ai-grok",
+        "ai-chatgpt",
+        "ai-gemini",
+        "ai-bolt",
+        "ai-hugging-face"
+      ]
+    },
+    "ai-v0": {
+      "label": "v0",
+      "url": "https://v0.app/",
+      "description": "Ship UI with AI helpers that understand React and Tailwind.",
+      "image": "https://simpleicons.org/icons/v0.svg",
+      "siteName": "Vercel v0"
+    },
+    "ai-convex-chef": {
+      "label": "Convex AI Chef",
+      "url": "https://chef.convex.dev/",
+      "description": "Generate Convex functions from natural language prompts.",
+      "image": "https://chef.convex.dev/chef.svg",
+      "siteName": "Convex",
+      "feature": {
+        "type": "code",
+        "command": "npx convex-devtools@latest"
       }
-    ]
-  },
-  {
-    "id": "tools",
-    "label": "Tools",
-    "links": [
-      {
-        "url": "https://massgrave.dev/",
-        "title": "Windows Activator",
-        "description": "Attiva Windows in modo semplice e veloce con un singolo comando.",
-        "siteName": "Windows",
-        "feature": {
-          "type": "code",
-          "command": "irm https://get.activated.win | iex"
-        }
-      },
-      {
-        "url": "https://christitus.com",
-        "title": "Windows Tweaks",
-        "description": "Ottimizza e personalizza Windows con una suite completa di strumenti.",
-        "siteName": "Chris Titus Tech",
-        "feature": {
-          "type": "code",
-          "command": "irm https://christitus.com/win | iex"
-        }
+    },
+    "ai-grok": {
+      "label": "Grok",
+      "url": "https://grok.com/",
+      "description": "Social AI assistant for conversational insights and productivity.",
+      "image": "https://simpleicons.org/icons/x.svg",
+      "siteName": "Grok AI"
+    },
+    "ai-chatgpt": {
+      "label": "ChatGPT",
+      "url": "https://chatgpt.com/",
+      "description": "Conversazioni potenziate da GPT-4 e GPT-4o.",
+      "image": "https://simpleicons.org/icons/openai.svg",
+      "siteName": "OpenAI"
+    },
+    "ai-gemini": {
+      "label": "Google Gemini",
+      "url": "https://gemini.google.com/?hl=it",
+      "description": "L'intelligenza artificiale conversazionale di Google.",
+      "image": "https://simpleicons.org/icons/googlegemini.svg",
+      "siteName": "Google"
+    },
+    "ai-bolt": {
+      "label": "Bolt",
+      "url": "https://bolt.new/",
+      "description": "Create full-stack apps with live AI pair programming.",
+      "image": "https://bolt.new/public-page-assets/bolt-logo.svg",
+      "siteName": "Bolt"
+    },
+    "ai-hugging-face": {
+      "label": "Hugging Face",
+      "url": "https://huggingface.co/",
+      "description": "Community-driven platform for machine learning models and datasets.",
+      "image": "https://huggingface.co/front/assets/huggingface_logo.svg",
+      "siteName": "Hugging Face"
+    },
+    "tools": {
+      "label": "Tools",
+      "children": ["tools-activator", "tools-windows-tweaks"]
+    },
+    "tools-activator": {
+      "label": "Windows Activator",
+      "url": "https://massgrave.dev/",
+      "description": "Attiva Windows in modo semplice e veloce con un singolo comando.",
+      "siteName": "Windows",
+      "feature": {
+        "type": "code",
+        "command": "irm https://get.activated.win | iex"
       }
-    ]
+    },
+    "tools-windows-tweaks": {
+      "label": "Windows Tweaks",
+      "url": "https://christitus.com",
+      "description": "Ottimizza e personalizza Windows con una suite completa di strumenti.",
+      "siteName": "Chris Titus Tech",
+      "feature": {
+        "type": "code",
+        "command": "irm https://christitus.com/win | iex"
+      }
+    }
   }
-]
+}

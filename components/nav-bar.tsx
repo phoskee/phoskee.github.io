@@ -37,9 +37,8 @@ import { ThemeSwitcher } from "./ThemeToggle";
 // Navigation links with icons for desktop icon-only navigation
 const navigationLinks = [
   { href: "#", label: "Dashboard", icon: HomeIcon, active: true },
-  { href: "#", label: "Projects", icon: LayersIcon },
-  { href: "#", label: "Documentation", icon: FileTextIcon },
-  { href: "#", label: "Team", icon: UsersIcon },
+  { href: "/projects", label: "Projects", icon: LayersIcon },
+  { href: "/docs", label: "Documentation", icon: FileTextIcon },
 ];
 
 // Language options

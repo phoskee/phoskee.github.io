@@ -136,4 +136,10 @@
   .arancione {
     @apply border border-orange-500;
   }
+  h1,
+  p,
+  a,
+  section {
+    @apply font-[Iowan_Old_Style] text-xl;
+  }
 }
