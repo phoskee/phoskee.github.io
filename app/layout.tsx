@@ -27,14 +27,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="it_IT" suppressHydrationWarning>
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="system"
-        enableSystem
-        disableTransitionOnChange
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} min-h-svh grid-rows-[20px_1fr] items-center justify-items-center font-sans antialiased`}
       >
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} min-h-svh grid-rows-[20px_1fr] items-center justify-items-center font-sans antialiased`}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
         >
           <nav className="row-start-1">
             <NavBar />
@@ -44,8 +44,8 @@ export default function RootLayout({
           </main>
 
           <Toaster position="top-right" richColors />
-        </body>
-      </ThemeProvider>
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

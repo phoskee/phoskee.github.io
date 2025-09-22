@@ -39,6 +39,13 @@ const projectStatus: Record<
 
 const projects: Project[] = [
   {
+    name: "Me lo posso permettere?",
+    title: "Me lo posso permettere?",
+    url: "/projects/melopossopermettere",
+    description: "Calcola mutuo e spese annuali.",
+    status: "wip",
+  },
+  {
     name: "phoskee-meteo",
     title: "Phoskee Meteo",
     url: "/projects/personali",
@@ -70,7 +77,8 @@ const projects: Project[] = [
     name: "project-cookie",
     title: "Project Cookie",
     url: "/projects/cookie",
-    description: "Strumento rapido per ispezionare e copiare i cookie del browser.",
+    description:
+      "Strumento rapido per ispezionare e copiare i cookie del browser.",
     status: "done",
   },
 ];
@@ -81,8 +89,9 @@ export default function ProjectsPage() {
       <header className="space-y-2">
         <h1 className="text-3xl font-semibold tracking-tight">Project Hub</h1>
         <p className="text-muted-foreground text-sm">
-          Una raccolta compatta dei prototipi e degli strumenti che sto sperimentando. Ogni
-          card porta alla demo interattiva con dettagli sullo stato del progetto.
+          Una raccolta compatta dei prototipi e degli strumenti che sto
+          sperimentando. Ogni card porta alla demo interattiva con dettagli
+          sullo stato del progetto.
         </p>
       </header>
 
@@ -95,9 +104,9 @@ export default function ProjectsPage() {
             <Link
               href={project.url}
               key={project.url}
-              className="group block h-full rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2"
+              className="group focus-visible:ring-primary/60 block h-full rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
             >
-              <Card className="h-full border-border/60 transition-transform duration-200 group-hover:-translate-y-1 group-hover:border-border">
+              <Card className="border-border/60 group-hover:border-border h-full transition-transform duration-200 group-hover:-translate-y-1">
                 <CardHeader className="flex flex-col gap-3 pb-3">
                   <div className="flex items-start justify-between gap-3">
                     <div className="space-y-1">
@@ -107,8 +116,10 @@ export default function ProjectsPage() {
                     <StatusIcon className="text-muted-foreground mt-1 size-5" />
                   </div>
                 </CardHeader>
-                <CardFooter className="flex items-center justify-between border-t border-border/80 bg-muted/30 px-4 py-3">
-                  <Badge variant={project.status === "wip" ? "secondary" : "default"}>
+                <CardFooter className="border-border/80 bg-muted/30 flex items-center justify-between border-t px-4 py-3">
+                  <Badge
+                    variant={project.status === "wip" ? "secondary" : "default"}
+                  >
                     {status.label}
                   </Badge>
                   <span className="text-muted-foreground text-xs font-medium">
