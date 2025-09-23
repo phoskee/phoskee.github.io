@@ -1,107 +1,33 @@
-"use client";
+"use client"
 
-import { Slider } from "@/components/ui/slider";
-import {
-  CartesianGrid,
-  Line,
-  LineChart,
-  XAxis,
-  type TooltipProps,
-} from "recharts";
+import { Slider } from "@/components/ui/slider"
+import { CartesianGrid, Line, LineChart, XAxis, type TooltipProps } from "recharts"
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-} from "@/components/ui/chart";
-import { useEffect, useState } from "react";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { type ChartConfig, ChartContainer, ChartTooltip } from "@/components/ui/chart"
+import { useEffect, useState } from "react"
 
-import { BudgetReport } from "./budget-report";
-import { MonthlyIncomeTable } from "./monthly-income-table";
-import { SpendingTables, type SpendingTotals } from "./spending-tables";
-import { Label } from "@/components/ui/label";
+import { BudgetReport } from "./budget-report"
+import { MonthlyIncomeTable } from "./monthly-income-table"
+import { SpendingTables, type SpendingTotals } from "./spending-tables"
+import { DataManagement } from "./data-management"
+import { AdvancedAnalytics } from "./advanced-analytics"
+import { Label } from "@/components/ui/label"
+import { ErrorBoundary } from "@/components/ui/error-boundary"
+import { LoadingSpinner } from "@/components/ui/loading-spinner"
+import { calculateLoanSchedule, formatCurrency, type LoanScheduleResult } from "@/lib/financial-utils"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { useFinancialStore } from "@/lib/financial-store"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-export const description = "A line chart";
+export const description = "A line chart"
 
 type LoanChartPoint = {
-  month: number;
-  quotaInteressi: number;
-  quotaCapitale: number;
-  capitaleResiduo: number;
-  pagamentoTotale: number;
-};
-
-type LoanScheduleResult = {
-  data: LoanChartPoint[];
-  totalInterest: number;
-  monthlyPayment: number;
-};
-
-const currencyFormatter = new Intl.NumberFormat("it-IT", {
-  style: "currency",
-  currency: "EUR",
-  minimumFractionDigits: 2,
-});
-
-const formatCurrency = (value: number) => currencyFormatter.format(value);
-
-function calculateLoanSchedule(
-  principal: number,
-  annualRate: number,
-  years: number,
-): LoanScheduleResult {
-  if (principal <= 0 || years <= 0) {
-    return {
-      data: [],
-      totalInterest: 0,
-      monthlyPayment: 0,
-    };
-  }
-
-  const payments = Math.max(Math.round(years * 12), 1);
-  const monthlyRate = annualRate > 0 ? annualRate / 100 / 12 : 0;
-  const monthlyPayment =
-    monthlyRate === 0
-      ? principal / payments
-      : (principal * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -payments));
-
-  let balance = principal;
-  const schedule: LoanChartPoint[] = [];
-  let totalInterest = 0;
-
-  for (let installment = 1; installment <= payments; installment += 1) {
-    const interestPayment = monthlyRate === 0 ? 0 : balance * monthlyRate;
-    let principalPayment = monthlyPayment - interestPayment;
-
-    if (installment === payments) {
-      principalPayment = balance;
-    }
-
-    balance = Math.max(balance - principalPayment, 0);
-    totalInterest += interestPayment;
-
-    schedule.push({
-      month: installment,
-      quotaInteressi: Number(interestPayment.toFixed(2)),
-      quotaCapitale: Number(principalPayment.toFixed(2)),
-      capitaleResiduo: Number(balance.toFixed(2)),
-      pagamentoTotale: Number((interestPayment + principalPayment).toFixed(2)),
-    });
-  }
-
-  return {
-    data: schedule,
-    totalInterest: Number(totalInterest.toFixed(2)),
-    monthlyPayment: schedule[0]?.pagamentoTotale ?? 0,
-  };
+  month: number
+  quotaInteressi: number
+  quotaCapitale: number
+  capitaleResiduo: number
+  pagamentoTotale: number
 }
 
 const chartConfig = {
@@ -117,28 +43,25 @@ const chartConfig = {
     label: "Capitale Residuo",
     color: "var(--chart-3)",
   },
-} satisfies ChartConfig;
+} satisfies ChartConfig
 
 function LoanTooltipContent({ active, payload }: TooltipProps<number, string>) {
   if (!active || !payload?.length) {
-    return null;
+    return null
   }
 
-  const point = payload[0]?.payload as LoanChartPoint | undefined;
+  const point = payload[0]?.payload as LoanChartPoint | undefined
 
   if (!point) {
-    return null;
+    return null
   }
 
-  const colors = payload.reduce<Record<string, string | undefined>>(
-    (acc, item) => {
-      if (item.dataKey) {
-        acc[item.dataKey.toString()] = item.color;
-      }
-      return acc;
-    },
-    {},
-  );
+  const colors = payload.reduce<Record<string, string | undefined>>((acc, item) => {
+    if (item.dataKey) {
+      acc[item.dataKey.toString()] = item.color
+    }
+    return acc
+  }, {})
 
   const rows: Array<{ label: string; value: number; color?: string }> = [
     {
@@ -160,7 +83,7 @@ function LoanTooltipContent({ active, payload }: TooltipProps<number, string>) {
       value: point.capitaleResiduo,
       color: colors.capitaleResiduo ?? "var(--color-capitaleResiduo)",
     },
-  ];
+  ]
 
   return (
     <div className="border-border/50 bg-background grid min-w-[12rem] gap-2 rounded-lg border px-3 py-2 text-xs shadow-xl">
@@ -170,174 +93,273 @@ function LoanTooltipContent({ active, payload }: TooltipProps<number, string>) {
           <div key={label} className="flex items-center justify-between gap-4">
             <div className="text-muted-foreground flex items-center gap-2">
               {color ? (
-                <span
-                  className="h-2.5 w-2.5 shrink-0 rounded-[2px]"
-                  style={{ backgroundColor: color }}
-                />
+                <span className="h-2.5 w-2.5 shrink-0 rounded-[2px]" style={{ backgroundColor: color }} />
               ) : null}
               <span>{label}</span>
             </div>
-            <span className="text-foreground font-mono tabular-nums">
-              {formatCurrency(value)}
-            </span>
+            <span className="text-foreground font-mono tabular-nums">{formatCurrency(value)}</span>
           </div>
         ))}
       </div>
     </div>
-  );
+  )
 }
 
-export function LoanChart() {
-  const [tassoInteresse, setTassoInteresse] = useState(2.5);
-  const [anni, setAnni] = useState(30);
-  const [richiesta, setRichiesta] = useState(150000);
+function LoanChartContent() {
+  const { loanParams, updateLoanParams } = useFinancialStore()
+  const { principal: richiesta, annualRate: tassoInteresse, years: anni } = loanParams
+
   const [loanSummary, setLoanSummary] = useState<LoanScheduleResult>(() =>
-    calculateLoanSchedule(150000, 2.5, 30),
-  );
-  const [monthlyIncomeTotal, setMonthlyIncomeTotal] = useState(0);
+    calculateLoanSchedule(richiesta, tassoInteresse, anni),
+  )
+  const [monthlyIncomeTotal, setMonthlyIncomeTotal] = useState(0)
   const [spendingTotals, setSpendingTotals] = useState<SpendingTotals>({
     annuali: 0,
     mensili: 0,
     settimanali: 0,
     giornaliere: 0,
-  });
+  })
+  const [isCalculating, setIsCalculating] = useState(false)
 
-  const { data: chartData, totalInterest, monthlyPayment } = loanSummary;
+  const { data: chartData, totalInterest, monthlyPayment, isValid, error } = loanSummary
 
   useEffect(() => {
-    setLoanSummary(calculateLoanSchedule(richiesta, tassoInteresse, anni));
-  }, [anni, richiesta, tassoInteresse]);
+    const calculateAsync = async () => {
+      setIsCalculating(true)
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 100))
+        const result = calculateLoanSchedule(richiesta, tassoInteresse, anni)
+        setLoanSummary(result)
+      } catch (err) {
+        console.error("[v0] Error calculating loan schedule:", err)
+        setLoanSummary({
+          data: [],
+          totalInterest: 0,
+          monthlyPayment: 0,
+          isValid: false,
+          error: "Errore nel calcolo del piano di ammortamento",
+        })
+      } finally {
+        setIsCalculating(false)
+      }
+    }
+
+    calculateAsync()
+  }, [anni, richiesta, tassoInteresse])
+
+  const handlePrincipalChange = (values: number[]) => {
+    const value = values[0] ?? richiesta
+    if (value >= 1000 && value <= 1000000) {
+      updateLoanParams({ principal: value })
+    }
+  }
+
+  const handleRateChange = (values: number[]) => {
+    const value = values[0] ?? tassoInteresse
+    if (value >= 0 && value <= 20) {
+      updateLoanParams({ annualRate: value })
+    }
+  }
+
+  const handleYearsChange = (values: number[]) => {
+    const value = values[0] ?? anni
+    if (value >= 1 && value <= 50) {
+      updateLoanParams({ years: value })
+    }
+  }
 
   return (
-    <div className="flex flex-col gap-2">
-      <Card className="h-full">
-        <CardHeader>
-          <CardTitle>Piano di ammortamento</CardTitle>
-          <CardDescription>
-            Distribuzione mensile tra interessi, capitale e saldo residuo
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ChartContainer config={chartConfig}>
-            <LineChart
-              accessibilityLayer
-              data={chartData}
-              margin={{
-                left: 12,
-                right: 12,
-              }}
-            >
-              <CartesianGrid vertical={false} />
-              <XAxis
-                dataKey="month"
-                tickLine={false}
-                axisLine={false}
-                tickMargin={8}
-                tickFormatter={(value) => `${value}`}
-              />
-              <ChartTooltip cursor={false} content={<LoanTooltipContent />} />
-              <Line
-                dataKey="quotaInteressi"
-                type="natural"
-                stroke="var(--color-quotaInteressi)"
-                strokeWidth={2}
-                dot={false}
-              />
-              <Line
-                dataKey="quotaCapitale"
-                type="natural"
-                stroke="var(--color-quotaCapitale)"
-                strokeWidth={2}
-                dot={false}
-              />
-            </LineChart>
-          </ChartContainer>
-        </CardContent>
-        <CardFooter className="flex-col items-start gap-2 text-sm">
-          <div className="flex w-full flex-wrap gap-2 sm:flex-nowrap">
-            <div className="w-full rounded-md border p-2">
-              <div className="flex items-center justify-between gap-4">
-                <Label className="text-xl">Interessi totali</Label>
-                <Label className="text-xl">
-                  {formatCurrency(totalInterest)}
-                </Label>
+    <Tabs defaultValue="calculator" className="w-full">
+      <TabsList className="grid w-full grid-cols-4">
+        <TabsTrigger value="calculator">Calcolatore</TabsTrigger>
+        <TabsTrigger value="analytics">Analytics</TabsTrigger>
+        <TabsTrigger value="data">Gestione Dati</TabsTrigger>
+        <TabsTrigger value="reports">Report</TabsTrigger>
+      </TabsList>
+
+      <TabsContent value="calculator" className="space-y-2">
+        <Card className="h-full">
+          <CardHeader>
+            <CardTitle>Piano di ammortamento</CardTitle>
+            <CardDescription>Distribuzione mensile tra interessi, capitale e saldo residuo</CardDescription>
+            {!isValid && error && (
+              <Alert variant="destructive">
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+          </CardHeader>
+          <CardContent>
+            {isCalculating ? (
+              <div className="flex items-center justify-center h-64">
+                <LoadingSpinner size="lg" />
+              </div>
+            ) : isValid && chartData.length > 0 ? (
+              <ChartContainer config={chartConfig}>
+                <LineChart
+                  accessibilityLayer
+                  data={chartData}
+                  margin={{
+                    left: 12,
+                    right: 12,
+                  }}
+                >
+                  <CartesianGrid vertical={false} />
+                  <XAxis
+                    dataKey="month"
+                    tickLine={false}
+                    axisLine={false}
+                    tickMargin={8}
+                    tickFormatter={(value) => `${value}`}
+                  />
+                  <ChartTooltip cursor={false} content={<LoanTooltipContent />} />
+                  <Line
+                    dataKey="quotaInteressi"
+                    type="natural"
+                    stroke="var(--color-quotaInteressi)"
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                  <Line
+                    dataKey="quotaCapitale"
+                    type="natural"
+                    stroke="var(--color-quotaCapitale)"
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                </LineChart>
+              </ChartContainer>
+            ) : (
+              <div className="flex items-center justify-center h-64 text-muted-foreground">
+                Impossibile generare il grafico con i parametri attuali
+              </div>
+            )}
+          </CardContent>
+          <CardFooter className="flex-col items-start gap-2 text-sm">
+            <div className="flex w-full flex-wrap gap-2 sm:flex-nowrap">
+              <div className="w-full rounded-md border p-2">
+                <div className="flex items-center justify-between gap-4">
+                  <Label className="text-xl">Interessi totali</Label>
+                  <Label className="text-xl">{formatCurrency(totalInterest)}</Label>
+                </div>
+              </div>
+              <div className="w-full rounded-md border p-2">
+                <div className="flex items-center justify-between gap-4">
+                  <Label className="text-xl">Rata mensile</Label>
+                  <Label className="text-xl">{formatCurrency(monthlyPayment)}</Label>
+                </div>
               </div>
             </div>
-            <div className="w-full rounded-md border p-2">
-              <div className="flex items-center justify-between gap-4">
-                <Label className="text-xl">Rata mensile</Label>
-                <Label className="text-xl">
-                  {formatCurrency(monthlyPayment)}
-                </Label>
+
+            <div className="w-full space-y-4">
+              <div className="w-full rounded-md border p-4">
+                <div className="flex items-center justify-between gap-4 mb-2">
+                  <Label className="text-sm font-medium">Importo richiesto</Label>
+                  <Label className="text-lg font-semibold">{formatCurrency(richiesta)}</Label>
+                </div>
+                <Slider
+                  className="w-full"
+                  value={[richiesta]}
+                  min={1000}
+                  max={1000000}
+                  step={1000}
+                  onValueChange={handlePrincipalChange}
+                  aria-label="Importo del mutuo"
+                />
+                <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                  <span>1.000€</span>
+                  <span>1.000.000€</span>
+                </div>
+              </div>
+
+              <div className="w-full rounded-md border p-4">
+                <div className="flex items-center justify-between gap-4 mb-2">
+                  <Label className="text-sm font-medium">Tasso di interesse</Label>
+                  <Label className="text-lg font-semibold">
+                    {tassoInteresse.toLocaleString("it-IT", {
+                      maximumFractionDigits: 2,
+                      minimumFractionDigits: 1,
+                    })}
+                    %
+                  </Label>
+                </div>
+                <Slider
+                  className="w-full"
+                  value={[tassoInteresse]}
+                  min={0}
+                  max={20}
+                  step={0.1}
+                  onValueChange={handleRateChange}
+                  aria-label="Tasso di interesse annuale"
+                />
+                <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                  <span>0%</span>
+                  <span>20%</span>
+                </div>
+              </div>
+
+              <div className="w-full rounded-md border p-4">
+                <div className="flex items-center justify-between gap-4 mb-2">
+                  <Label className="text-sm font-medium">Durata</Label>
+                  <Label className="text-lg font-semibold">{anni} anni</Label>
+                </div>
+                <Slider
+                  className="w-full"
+                  value={[anni]}
+                  min={1}
+                  max={50}
+                  step={1}
+                  onValueChange={handleYearsChange}
+                  aria-label="Durata del mutuo in anni"
+                />
+                <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                  <span>1 anno</span>
+                  <span>50 anni</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="w-full rounded-md border p-2">
-            <div className="flex items-center justify-between gap-4">
-              <Slider
-                className="max-w-md"
-                value={[richiesta]}
-                min={1000}
-                max={300000}
-                step={1000}
-                onValueChange={(values) =>
-                  setRichiesta(Number(values[0] ?? richiesta))
-                }
-              />
-              <Label className="text-xl">{formatCurrency(richiesta)}</Label>
-            </div>
-          </div>
+          </CardFooter>
+        </Card>
 
-          <div className="w-full rounded-md border p-2">
-            <div className="flex items-center justify-between gap-4">
-              <Slider
-                className="max-w-md"
-                value={[tassoInteresse]}
-                min={0}
-                max={15}
-                step={0.1}
-                onValueChange={(values) =>
-                  setTassoInteresse(Number(values[0] ?? tassoInteresse))
-                }
-              />
-              <Label className="text-xl">
-                {tassoInteresse.toLocaleString("it-IT", {
-                  maximumFractionDigits: 2,
-                  minimumFractionDigits: 1,
-                })}
-                %
-              </Label>
-            </div>
-          </div>
-          <div className="w-full rounded-md border p-2">
-            <div className="flex items-center justify-between gap-4">
-              <Slider
-                className="max-w-md"
-                value={[anni]}
-                min={1}
-                max={40}
-                step={1}
-                onValueChange={(values) => setAnni(Number(values[0] ?? anni))}
-              />
-              <Label className="text-xl">{anni} anni</Label>
-            </div>
-          </div>
-        </CardFooter>
-      </Card>
+        <div className="space-y-2">
+          <ErrorBoundary>
+            <MonthlyIncomeTable onTotalChange={setMonthlyIncomeTotal} />
+          </ErrorBoundary>
 
-      <div className="space-y-2">
-        <MonthlyIncomeTable onTotalChange={setMonthlyIncomeTotal} />
+          <ErrorBoundary>
+            <SpendingTables rataMensile={monthlyPayment} onTotalsChange={setSpendingTotals} />
+          </ErrorBoundary>
+        </div>
+      </TabsContent>
 
-        <SpendingTables
-          rataMensile={monthlyPayment}
-          onTotalsChange={setSpendingTotals}
-        />
+      <TabsContent value="analytics">
+        <ErrorBoundary>
+          <AdvancedAnalytics
+            monthlyIncome={monthlyIncomeTotal}
+            monthlyPayment={monthlyPayment}
+            spendingTotals={spendingTotals}
+          />
+        </ErrorBoundary>
+      </TabsContent>
 
-        <BudgetReport
-          monthlyIncome={monthlyIncomeTotal}
-          expenseTotals={spendingTotals}
-        />
-      </div>
-    </div>
-  );
+      <TabsContent value="data">
+        <ErrorBoundary>
+          <DataManagement />
+        </ErrorBoundary>
+      </TabsContent>
+
+      <TabsContent value="reports">
+        <ErrorBoundary>
+          <BudgetReport monthlyIncome={monthlyIncomeTotal} expenseTotals={spendingTotals} />
+        </ErrorBoundary>
+      </TabsContent>
+    </Tabs>
+  )
+}
+
+export function LoanChart() {
+  return (
+    <ErrorBoundary>
+      <LoanChartContent />
+    </ErrorBoundary>
+  )
 }

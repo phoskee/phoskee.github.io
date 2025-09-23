@@ -1,4 +1,4 @@
-import { LoanChart } from "./_components/loan-chart";
+import { LoanChart } from "./_components/loan-chart"
 
 export default function Home() {
   return (
@@ -7,5 +7,5 @@ export default function Home() {
         <LoanChart />
       </main>
     </div>
-  );
+  )
 }
