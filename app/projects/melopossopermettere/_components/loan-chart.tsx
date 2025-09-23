@@ -229,53 +229,40 @@ function LoanChartContent() {
             )}
           </CardHeader>
           <CardContent>
-            {isCalculating ? (
-              <div className="flex h-64 items-center justify-center">
-                <LoadingSpinner size="lg" />
-              </div>
-            ) : isValid && chartData.length > 0 ? (
-              <ChartContainer config={chartConfig}>
-                <LineChart
-                  accessibilityLayer
-                  data={chartData}
-                  margin={{
-                    left: 12,
-                    right: 12,
-                  }}
-                >
-                  <CartesianGrid vertical={false} />
-                  <XAxis
-                    dataKey="month"
-                    tickLine={false}
-                    axisLine={false}
-                    tickMargin={8}
-                    tickFormatter={(value) => `${value}`}
-                  />
-                  <ChartTooltip
-                    cursor={false}
-                    content={<LoanTooltipContent />}
-                  />
-                  <Line
-                    dataKey="quotaInteressi"
-                    type="natural"
-                    stroke="var(--color-quotaInteressi)"
-                    strokeWidth={2}
-                    dot={false}
-                  />
-                  <Line
-                    dataKey="quotaCapitale"
-                    type="natural"
-                    stroke="var(--color-quotaCapitale)"
-                    strokeWidth={2}
-                    dot={false}
-                  />
-                </LineChart>
-              </ChartContainer>
-            ) : (
-              <div className="text-muted-foreground flex h-64 items-center justify-center">
-                Impossibile generare il grafico con i parametri attuali
-              </div>
-            )}
+            <ChartContainer config={chartConfig}>
+              <LineChart
+                accessibilityLayer
+                data={chartData}
+                margin={{
+                  left: 12,
+                  right: 12,
+                }}
+              >
+                <CartesianGrid vertical={false} />
+                <XAxis
+                  dataKey="month"
+                  tickLine={false}
+                  axisLine={false}
+                  tickMargin={8}
+                  tickFormatter={(value) => `${value}`}
+                />
+                <ChartTooltip cursor={false} content={<LoanTooltipContent />} />
+                <Line
+                  dataKey="quotaInteressi"
+                  type="natural"
+                  stroke="var(--color-quotaInteressi)"
+                  strokeWidth={2}
+                  dot={false}
+                />
+                <Line
+                  dataKey="quotaCapitale"
+                  type="natural"
+                  stroke="var(--color-quotaCapitale)"
+                  strokeWidth={2}
+                  dot={false}
+                />
+              </LineChart>
+            </ChartContainer>
           </CardContent>
           <CardFooter className="flex-col items-start gap-2 text-sm">
             <div className="flex w-full flex-wrap gap-2 sm:flex-nowrap">
