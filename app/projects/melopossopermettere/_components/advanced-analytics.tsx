@@ -1,28 +1,56 @@
-"use client"
+"use client";
 
-import { useMemo } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Progress } from "@/components/ui/progress"
-import { Badge } from "@/components/ui/badge"
-import { formatCurrency } from "@/lib/financial-utils"
-import { useFinancialStore } from "@/lib/financial-store"
-import { PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Area, AreaChart } from "recharts"
-import { ChartTooltip } from "@/components/ui/chart"
-import { TrendingUp, TrendingDown, AlertTriangle, Target, PiggyBank, Calculator } from "lucide-react"
+import { useMemo } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
+import { formatCurrency } from "@/lib/financial-utils";
+import { useFinancialStore } from "@/lib/financial-store";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  ResponsiveContainer,
+  Area,
+  AreaChart,
+} from "recharts";
+import { ChartTooltip } from "@/components/ui/chart";
+import {
+  TrendingUp,
+  TrendingDown,
+  AlertTriangle,
+  Target,
+  PiggyBank,
+  Calculator,
+} from "lucide-react";
+import { Label } from "@/components/ui/label";
 
 type AnalyticsProps = {
-  monthlyIncome: number
-  monthlyPayment: number
+  monthlyIncome: number;
+  monthlyPayment: number;
   spendingTotals: {
-    annuali: number
-    mensili: number
-    settimanali: number
-    giornaliere: number
-  }
-}
+    annuali: number;
+    mensili: number;
+    settimanali: number;
+    giornaliere: number;
+  };
+};
 
-export function AdvancedAnalytics({ monthlyIncome, monthlyPayment, spendingTotals }: AnalyticsProps) {
-  const { loanParams } = useFinancialStore()
+export function AdvancedAnalytics({
+  monthlyIncome,
+  monthlyPayment,
+  spendingTotals,
+}: AnalyticsProps) {
+  const { loanParams } = useFinancialStore();
 
   const analytics = useMemo(() => {
     // Calculate monthly expenses
@@ -30,44 +58,62 @@ export function AdvancedAnalytics({ monthlyIncome, monthlyPayment, spendingTotal
       spendingTotals.mensili +
       (spendingTotals.settimanali * 52) / 12 +
       spendingTotals.giornaliere * 30 +
-      spendingTotals.annuali / 12
+      spendingTotals.annuali / 12;
 
-    const netMonthlyIncome = monthlyIncome - monthlyExpenses
-    const savingsRate = monthlyIncome > 0 ? (netMonthlyIncome / monthlyIncome) * 100 : 0
-    const debtToIncomeRatio = monthlyIncome > 0 ? (monthlyPayment / monthlyIncome) * 100 : 0
+    const netMonthlyIncome = monthlyIncome - monthlyExpenses;
+    const savingsRate =
+      monthlyIncome > 0 ? (netMonthlyIncome / monthlyIncome) * 100 : 0;
+    const debtToIncomeRatio =
+      monthlyIncome > 0 ? (monthlyPayment / monthlyIncome) * 100 : 0;
 
     // Spending breakdown for pie chart
     const spendingBreakdown = [
       { name: "Mutuo", value: monthlyPayment, color: "#ef4444" },
-      { name: "Spese Mensili", value: spendingTotals.mensili - monthlyPayment, color: "#f97316" },
-      { name: "Spese Settimanali", value: (spendingTotals.settimanali * 52) / 12, color: "#eab308" },
-      { name: "Spese Giornaliere", value: spendingTotals.giornaliere * 30, color: "#22c55e" },
-      { name: "Spese Annuali", value: spendingTotals.annuali / 12, color: "#3b82f6" },
-    ].filter((item) => item.value > 0)
+      {
+        name: "Spese Mensili",
+        value: spendingTotals.mensili - monthlyPayment,
+        color: "#f97316",
+      },
+      {
+        name: "Spese Settimanali",
+        value: (spendingTotals.settimanali * 52) / 12,
+        color: "#eab308",
+      },
+      {
+        name: "Spese Giornaliere",
+        value: spendingTotals.giornaliere * 30,
+        color: "#22c55e",
+      },
+      {
+        name: "Spese Annuali",
+        value: spendingTotals.annuali / 12,
+        color: "#3b82f6",
+      },
+    ].filter((item) => item.value > 0);
 
     // Financial health score (0-100)
-    let healthScore = 100
-    if (savingsRate < 10) healthScore -= 30
-    else if (savingsRate < 20) healthScore -= 15
+    let healthScore = 100;
+    if (savingsRate < 10) healthScore -= 30;
+    else if (savingsRate < 20) healthScore -= 15;
 
-    if (debtToIncomeRatio > 40) healthScore -= 30
-    else if (debtToIncomeRatio > 30) healthScore -= 15
+    if (debtToIncomeRatio > 40) healthScore -= 30;
+    else if (debtToIncomeRatio > 30) healthScore -= 15;
 
-    if (netMonthlyIncome < 0) healthScore -= 40
+    if (netMonthlyIncome < 0) healthScore -= 40;
 
-    healthScore = Math.max(0, Math.min(100, healthScore))
+    healthScore = Math.max(0, Math.min(100, healthScore));
 
     // Loan analysis
-    const totalLoanCost = monthlyPayment * loanParams.years * 12
-    const totalInterest = totalLoanCost - loanParams.principal
-    const interestPercentage = (totalInterest / loanParams.principal) * 100
+    const totalLoanCost = monthlyPayment * loanParams.years * 12;
+    const totalInterest = totalLoanCost - loanParams.principal;
+    const interestPercentage = (totalInterest / loanParams.principal) * 100;
 
     // Savings projection (next 5 years)
     const savingsProjection = Array.from({ length: 60 }, (_, month) => ({
       month: month + 1,
       savings: Math.max(0, netMonthlyIncome * (month + 1)),
       year: Math.floor(month / 12) + 1,
-    }))
+    }));
 
     return {
       monthlyExpenses,
@@ -80,21 +126,21 @@ export function AdvancedAnalytics({ monthlyIncome, monthlyPayment, spendingTotal
       totalInterest,
       interestPercentage,
       savingsProjection,
-    }
-  }, [monthlyIncome, monthlyPayment, spendingTotals, loanParams])
+    };
+  }, [monthlyIncome, monthlyPayment, spendingTotals, loanParams]);
 
   const getHealthScoreColor = (score: number) => {
-    if (score >= 80) return "text-green-600"
-    if (score >= 60) return "text-yellow-600"
-    return "text-red-600"
-  }
+    if (score >= 80) return "text-green-600";
+    if (score >= 60) return "text-yellow-600";
+    return "text-red-600";
+  };
 
   const getHealthScoreBadge = (score: number) => {
-    if (score >= 80) return { variant: "default" as const, text: "Eccellente" }
-    if (score >= 60) return { variant: "secondary" as const, text: "Buono" }
-    if (score >= 40) return { variant: "outline" as const, text: "Discreto" }
-    return { variant: "destructive" as const, text: "Critico" }
-  }
+    if (score >= 80) return { variant: "default" as const, text: "Eccellente" };
+    if (score >= 60) return { variant: "secondary" as const, text: "Buono" };
+    if (score >= 40) return { variant: "outline" as const, text: "Discreto" };
+    return { variant: "destructive" as const, text: "Critico" };
+  };
 
   return (
     <div className="space-y-6">
@@ -115,43 +161,62 @@ export function AdvancedAnalytics({ monthlyIncome, monthlyPayment, spendingTotal
             >
               {formatCurrency(analytics.netMonthlyIncome)}
             </div>
-            <p className="text-xs text-muted-foreground">
-              {analytics.netMonthlyIncome >= 0 ? "Surplus mensile" : "Deficit mensile"}
+            <p className="text-muted-foreground text-xs">
+              {analytics.netMonthlyIncome >= 0
+                ? "Surplus mensile"
+                : "Deficit mensile"}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Tasso di Risparmio</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Tasso di Risparmio
+            </CardTitle>
             <PiggyBank className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{analytics.savingsRate.toFixed(1)}%</div>
-            <Progress value={Math.max(0, analytics.savingsRate)} className="mt-2" />
-            <p className="text-xs text-muted-foreground mt-1">Obiettivo: 20%</p>
+            <div className="text-2xl font-bold">
+              {analytics.savingsRate.toFixed(1)}%
+            </div>
+            <Progress
+              value={Math.max(0, analytics.savingsRate)}
+              className="mt-2"
+            />
+            <p className="text-muted-foreground mt-1 text-xs">Obiettivo: 20%</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Rapporto Debito/Reddito</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Rapporto Debito/Reddito
+            </CardTitle>
             <Calculator className="h-4 w-4 text-orange-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{analytics.debtToIncomeRatio.toFixed(1)}%</div>
+            <div className="text-2xl font-bold">
+              {analytics.debtToIncomeRatio.toFixed(1)}%
+            </div>
             <Progress value={analytics.debtToIncomeRatio} className="mt-2" />
-            <p className="text-xs text-muted-foreground mt-1">Limite consigliato: 30%</p>
+            <p className="text-muted-foreground mt-1 text-xs">
+              Limite consigliato: 30%
+            </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Salute Finanziaria</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Salute Finanziaria
+            </CardTitle>
             <Target className="h-4 w-4 text-purple-600" />
           </CardHeader>
           <CardContent>
-            <div className={`text-2xl font-bold ${getHealthScoreColor(analytics.healthScore)}`}>
+            <div
+              className={`text-2xl font-bold ${getHealthScoreColor(analytics.healthScore)}`}
+            >
               {analytics.healthScore}/100
             </div>
             <div className="mt-2">
@@ -169,7 +234,7 @@ export function AdvancedAnalytics({ monthlyIncome, monthlyPayment, spendingTotal
         <Card>
           <CardHeader>
             <CardTitle>Distribuzione Spese Mensili</CardTitle>
-            <CardDescription>Breakdown delle tue spese per categoria</CardDescription>
+            <CardDescription>Le tue spese per categoria</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="h-64">
@@ -191,15 +256,17 @@ export function AdvancedAnalytics({ monthlyIncome, monthlyPayment, spendingTotal
                   <ChartTooltip
                     content={({ active, payload }) => {
                       if (active && payload && payload.length) {
-                        const data = payload[0].payload
+                        const data = payload[0].payload;
                         return (
-                          <div className="bg-background border rounded-lg p-2 shadow-lg">
+                          <div className="bg-background rounded-lg border p-2 shadow-lg">
                             <p className="font-medium">{data.name}</p>
-                            <p className="text-sm text-muted-foreground">{formatCurrency(data.value)}</p>
+                            <p className="text-muted-foreground text-sm">
+                              {formatCurrency(data.value)}
+                            </p>
                           </div>
-                        )
+                        );
                       }
-                      return null
+                      return null;
                     }}
                   />
                 </PieChart>
@@ -207,12 +274,20 @@ export function AdvancedAnalytics({ monthlyIncome, monthlyPayment, spendingTotal
             </div>
             <div className="mt-4 space-y-2">
               {analytics.spendingBreakdown.map((item, index) => (
-                <div key={index} className="flex items-center justify-between text-sm">
+                <div
+                  key={index}
+                  className="flex items-center justify-between text-sm"
+                >
                   <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
+                    <div
+                      className="h-3 w-3 rounded-full"
+                      style={{ backgroundColor: item.color }}
+                    />
                     <span>{item.name}</span>
                   </div>
-                  <span className="font-medium">{formatCurrency(item.value)}</span>
+                  <span className="font-medium">
+                    {formatCurrency(item.value)}
+                  </span>
                 </div>
               ))}
             </div>
@@ -222,62 +297,41 @@ export function AdvancedAnalytics({ monthlyIncome, monthlyPayment, spendingTotal
         {/* Savings Projection */}
         <Card>
           <CardHeader>
-            <CardTitle>Proiezione Risparmi</CardTitle>
-            <CardDescription>Accumulo risparmi nei prossimi 5 anni</CardDescription>
+            <CardTitle>Analisi Mutuo</CardTitle>
+            <CardDescription>Dettagli completi del tuo mutuo</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="h-64">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={analytics.savingsProjection.filter((_, i) => i % 6 === 0)}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="year" tickFormatter={(value) => `Anno ${value}`} />
-                  <YAxis tickFormatter={(value) => formatCurrency(value)} />
-                  <ChartTooltip
-                    content={({ active, payload, label }) => {
-                      if (active && payload && payload.length) {
-                        return (
-                          <div className="bg-background border rounded-lg p-2 shadow-lg">
-                            <p className="font-medium">Anno {label}</p>
-                            <p className="text-sm text-muted-foreground">
-                              Risparmi: {formatCurrency(payload[0].value as number)}
-                            </p>
-                          </div>
-                        )
-                      }
-                      return null
-                    }}
-                  />
-                  <Area type="monotone" dataKey="savings" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.3} />
-                </AreaChart>
-              </ResponsiveContainer>
+            <div className="flex flex-col gap-4">
+              <div className="space-y-2">
+                <p className="text-muted-foreground text-sm font-medium">
+                  Costo Totale Mutuo
+                </p>
+                <p className="text-2xl font-bold">
+                  {formatCurrency(analytics.totalLoanCost)}
+                </p>
+              </div>
+              <div className="space-y-2">
+                <p className="text-muted-foreground text-sm font-medium">
+                  Interessi Totali
+                </p>
+                <p className="text-2xl font-bold text-orange-600">
+                  {formatCurrency(analytics.totalInterest)}
+                </p>
+              </div>
+              <div className="space-y-2">
+                <p className="text-muted-foreground text-sm font-medium">
+                  Percentuale Interessi
+                </p>
+                <p className="text-2xl font-bold">
+                  {analytics.interestPercentage.toFixed(1)}%
+                </p>
+              </div>
             </div>
           </CardContent>
         </Card>
       </div>
 
       {/* Loan Analysis */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Analisi Mutuo</CardTitle>
-          <CardDescription>Dettagli completi del tuo mutuo</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-4 md:grid-cols-3">
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-muted-foreground">Costo Totale Mutuo</p>
-              <p className="text-2xl font-bold">{formatCurrency(analytics.totalLoanCost)}</p>
-            </div>
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-muted-foreground">Interessi Totali</p>
-              <p className="text-2xl font-bold text-orange-600">{formatCurrency(analytics.totalInterest)}</p>
-            </div>
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-muted-foreground">Percentuale Interessi</p>
-              <p className="text-2xl font-bold">{analytics.interestPercentage.toFixed(1)}%</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
 
       {/* Financial Recommendations */}
       <Card>
@@ -286,45 +340,58 @@ export function AdvancedAnalytics({ monthlyIncome, monthlyPayment, spendingTotal
             <AlertTriangle className="h-5 w-5 text-yellow-600" />
             Raccomandazioni Finanziarie
           </CardTitle>
-          <CardDescription>Suggerimenti per migliorare la tua situazione finanziaria</CardDescription>
+          <CardDescription>
+            Suggerimenti per migliorare la tua situazione finanziaria
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             {analytics.savingsRate < 10 && (
-              <div className="p-4 border border-yellow-200 rounded-lg bg-yellow-50">
-                <h4 className="font-medium text-yellow-800">Aumenta il Tasso di Risparmio</h4>
-                <p className="text-sm text-yellow-700 mt-1">
-                  Il tuo tasso di risparmio è del {analytics.savingsRate.toFixed(1)}%. Cerca di raggiungere almeno il
-                  20% riducendo le spese non essenziali.
+              <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4">
+                <Label className="font-medium text-yellow-800">
+                  Aumenta il Tasso di Risparmio
+                </Label>
+                <p className="mt-1 text-sm text-yellow-700">
+                  Il tuo tasso di risparmio è del{" "}
+                  {analytics.savingsRate.toFixed(1)}%. Cerca di raggiungere
+                  almeno il 20% riducendo le spese non essenziali.
                 </p>
               </div>
             )}
 
             {analytics.debtToIncomeRatio > 30 && (
-              <div className="p-4 border border-red-200 rounded-lg bg-red-50">
-                <h4 className="font-medium text-red-800">Rapporto Debito/Reddito Elevato</h4>
-                <p className="text-sm text-red-700 mt-1">
-                  Il tuo rapporto debito/reddito è del {analytics.debtToIncomeRatio.toFixed(1)}%. Considera di aumentare
-                  le entrate o ridurre i debiti.
+              <div className="rounded-lg border border-red-200 bg-red-50 p-4">
+                <Label className="font-medium text-red-800">
+                  Rapporto Debito/Reddito Elevato
+                </Label>
+                <p className="mt-1 text-sm text-red-700">
+                  Il tuo rapporto debito/reddito è del{" "}
+                  {analytics.debtToIncomeRatio.toFixed(1)}%. Considera di
+                  aumentare le entrate o ridurre i debiti.
                 </p>
               </div>
             )}
 
             {analytics.netMonthlyIncome < 0 && (
-              <div className="p-4 border border-red-200 rounded-lg bg-red-50">
-                <h4 className="font-medium text-red-800">Deficit Mensile</h4>
-                <p className="text-sm text-red-700 mt-1">
-                  Stai spendendo più di quanto guadagni. È urgente rivedere il budget e ridurre le spese.
+              <div className="rounded-lg border border-red-200 bg-red-50 p-4">
+                <Label className="font-medium text-red-800">
+                  Deficit Mensile
+                </Label>
+                <p className="mt-1 text-sm text-red-700">
+                  Stai spendendo più di quanto guadagni. È urgente rivedere il
+                  budget e ridurre le spese.
                 </p>
               </div>
             )}
 
             {analytics.healthScore >= 80 && (
-              <div className="p-4 border border-green-200 rounded-lg bg-green-50">
-                <h4 className="font-medium text-green-800">Ottima Gestione Finanziaria!</h4>
-                <p className="text-sm text-green-700 mt-1">
-                  La tua situazione finanziaria è eccellente. Continua così e considera investimenti per far crescere i
-                  tuoi risparmi.
+              <div className="rounded-lg border border-green-200 bg-green-50 p-4">
+                <Label className="font-medium text-green-800">
+                  Ottima Gestione Finanziaria!
+                </Label>
+                <p className="mt-1 text-sm text-green-700">
+                  La tua situazione finanziaria è eccellente. Continua così e
+                  considera investimenti per far crescere i tuoi risparmi.
                 </p>
               </div>
             )}
@@ -332,5 +399,5 @@ export function AdvancedAnalytics({ monthlyIncome, monthlyPayment, spendingTotal
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

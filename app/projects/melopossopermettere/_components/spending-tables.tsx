@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 
 import { Card, CardAction, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -29,6 +29,26 @@ const TABLE_META: Array<{ key: TableKey; title: string }> = [
   { key: "settimanali", title: "Spese settimanali" },
   { key: "giornaliere", title: "Spese giornaliere" },
 ]
+
+const ROW_ID_PATTERN = /^sp-(\d+)$/
+
+function getHighestRowCounter(rowsMap: Partial<Record<TableKey, SpendingRow[]>>): number {
+  let maxId = 0
+
+  for (const rows of Object.values(rowsMap)) {
+    for (const row of rows ?? []) {
+      const match = ROW_ID_PATTERN.exec(row.id)
+      if (!match) continue
+
+      const numericId = Number.parseInt(match[1] ?? "", 10)
+      if (!Number.isNaN(numericId) && numericId > maxId) {
+        maxId = numericId
+      }
+    }
+  }
+
+  return maxId
+}
 
 export type SpendingTotals = {
   annuali: number
@@ -74,7 +94,7 @@ export function SpendingTables({ rataMensile, onTotalsChange }: SpendingTablesPr
 
   const { spendingRows, setSpendingRows } = useFinancialStore()
 
-  const createEmptyRow = useCallback((): SpendingRow => {
+  const createEmptyRow = () => {
     idCounterRef.current += 1
     return {
       id: `sp-${idCounterRef.current}`,
@@ -82,12 +102,14 @@ export function SpendingTables({ rataMensile, onTotalsChange }: SpendingTablesPr
       spesa: "",
       isCommitted: false,
     }
-  }, [])
+  }
 
   const [rowsByKey, setRowsByKey] = useState<Record<TableKey, SpendingRow[]>>(() => {
     const hasData = Object.values(spendingRows).some((rows) => rows.length > 0)
     if (hasData) {
-      return spendingRows as Record<TableKey, SpendingRow[]>
+      const initialRows = spendingRows as Record<TableKey, SpendingRow[]>
+      idCounterRef.current = getHighestRowCounter(initialRows)
+      return initialRows
     }
 
     idCounterRef.current = 0
@@ -98,6 +120,13 @@ export function SpendingTables({ rataMensile, onTotalsChange }: SpendingTablesPr
       giornaliere: [createEmptyRow()],
     }
   })
+
+  useEffect(() => {
+    const currentMax = getHighestRowCounter(rowsByKey)
+    if (currentMax > idCounterRef.current) {
+      idCounterRef.current = currentMax
+    }
+  }, [rowsByKey])
 
   useEffect(() => {
     Object.entries(rowsByKey).forEach(([key, rows]) => {
