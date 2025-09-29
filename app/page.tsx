@@ -1,103 +1,174 @@
-import Image from "next/image";
+"use client";
+import { Highlighter } from "@/components/ui/highlighter";
+import { TypingAnimation } from "@/components/ui/typing-animation";
+import { WordRotate } from "@/components/ui/word-rotate";
+import { RefObject, useRef } from "react";
+
+const scrollAllaSezione = (ref: RefObject<HTMLDivElement | null>) => {
+  ref.current?.scrollIntoView({ behavior: "smooth" });
+};
+const sectionStyle = "grid h-svh w-full grid-rows-[1fr_3rem]";
+const contentStyle =
+  "row-start-1 flex items-center justify-center text-5xl font-bold";
+const footerStyle = "row-start-2 flex items-center justify-center";
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const sezione1Ref = useRef<HTMLDivElement | null>(null);
+  const sezione2Ref = useRef<HTMLDivElement | null>(null);
+  const sezione3Ref = useRef<HTMLDivElement | null>(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+  return (
+    <div className="">
+      <Hero sectionRef={sezione1Ref} nextRef={sezione2Ref} />
+      <Projects sectionRef={sezione2Ref} nextRef={sezione3Ref} />
+      <About sectionRef={sezione3Ref} nextRef={sezione1Ref} />
     </div>
+  );
+}
+
+type SectionProps = {
+  sectionRef: RefObject<HTMLDivElement | null>;
+  nextRef: RefObject<HTMLDivElement | null>;
+};
+
+function Hero({ sectionRef, nextRef }: SectionProps) {
+  return (
+    <section ref={sectionRef} className={sectionStyle}>
+      <div className={contentStyle}>
+        <h6 className="bold flex flex-col gap-2 text-4xl italic md:text-9xl">
+          <TypingAnimation
+            startOnView={true}
+            duration={200}
+            delay={200}
+            className="bold text-6xl italic md:text-9xl"
+          >
+            Ciao 👋
+          </TypingAnimation>
+          <TypingAnimation
+            startOnView={true}
+            duration={100}
+            delay={1000}
+            className="bold text-muted-foreground text-xs italic md:text-3xl"
+          >
+            [ click to scroll down ]
+          </TypingAnimation>
+        </h6>
+      </div>
+      <footer className={footerStyle}>
+        <button
+          onClick={() => scrollAllaSezione(nextRef)}
+          className="animate-bounce text-5xl"
+        >
+          👇🏼
+        </button>
+      </footer>
+    </section>
+  );
+}
+
+function Projects({ sectionRef, nextRef }: SectionProps) {
+  return (
+    <section ref={sectionRef} className={sectionStyle}>
+      <div className={contentStyle}>
+        <div className="flex flex-col gap-6 px-4 text-center md:gap-12">
+          <h6 className="w-[90svw] text-justify text-lg md:w-md md:text-3xl">
+            Always tinkering with Next.js, Convex, and Tailwind, trying to build
+            web apps that{" "}
+            <Highlighter
+              action="underline"
+              color="#FF9800"
+              iterations={3}
+              isView={true}
+            >
+              hopefully
+            </Highlighter>{" "}
+            <Highlighter
+              action="crossed-off"
+              color="#FF9800"
+              iterations={3}
+              isView={true}
+            >
+              don't
+            </Highlighter>{" "}
+            explode on the first click (spoiler: sometimes they do, and that’s
+            part of the fun). Lately, I’ve been deep into dashboards, inventory
+            systems, digital boards,{" "}
+            <Highlighter
+              action="highlight"
+              color="#FF9800"
+              iterations={1}
+              isView={true}
+            >
+              quiz's web app
+            </Highlighter>{" "}
+            and pretty much anything that makes my life (and everyone else’s) a
+            little easier… or at least{" "}
+            <Highlighter
+              action="underline"
+              color="#FF9800"
+              iterations={2}
+              isView={true}
+            >
+              tries
+            </Highlighter>{" "}
+            to.
+          </h6>
+          <h6 className="text-justify text-lg md:w-md md:text-3xl">
+            Right now, I’m diving deeper <br />
+            into{" "}
+            <WordRotate
+              className="inline-block w-fit items-baseline text-purple-400"
+              duration={1200}
+              words={[
+                "React",
+                "TypeScript",
+                "Next.js",
+                "Convex",
+                "TailwindCSS",
+                "shadcn/ui",
+                "Prisma",
+                "tRPC",
+                "Docker",
+              ]}
+            />
+          </h6>
+        </div>
+      </div>
+      <footer className={footerStyle}>
+        <button onClick={() => scrollAllaSezione(nextRef)}>
+          Vai alla sezione
+        </button>
+      </footer>
+    </section>
+  );
+}
+
+function About({ sectionRef, nextRef }: SectionProps) {
+  return (
+    <section ref={sectionRef} className={sectionStyle}>
+      <div className={contentStyle}>
+        <div className="flex w-svw items-center justify-center">
+          <h6 className="w-[90svw] text-lg md:w-xl md:text-3xl">
+            🌱 Right now, I’m working on my complicated love-hate relationship
+            with TypeScript — a saga full of cryptic errors, bug hunts, and
+            those rare “aha!” moments that make it all worth it. 💡 I like
+            building useful stuff, but every now and then I can’t resist
+            spinning up completely pointless projects just to say, “It works! …I
+            think.” 🚀 Recently, I’ve been playing around with clean database
+            setups, custom auth flows, and file management systems that are
+            supposed to be “simple,” but somehow turn into final boss battles
+            fought with commits and caffeine. 📫 You can usually find me
+            somewhere in a git log, wrestling with a migration or trying to
+            figure out why something that worked perfectly yesterday decided to
+            stop today.
+          </h6>
+        </div>
+      </div>
+      <footer className={footerStyle}>
+        <button onClick={() => scrollAllaSezione(nextRef)}>
+          Vai alla sezione
+        </button>
+      </footer>
+    </section>
   );
 }

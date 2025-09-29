@@ -3,7 +3,7 @@
 **Phoskee** è il mio spazio digitale, un luogo dove convergono design, codice e sperimentazione.  
 Qui raccolgo progetti, idee e strumenti che uniscono creatività e sviluppo software.
 
-![Phoskee Logo](./assets/logo.svg)
+![Phoskee Logo](./public/logo.svg)
 
 ---
 

@@ -44,6 +44,7 @@
 }
 
 :root {
+  --iowan-font: "Iowan Old Style";
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -111,12 +112,39 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 }
+h6 {
+  font-family: var(--iowan-font);
+}
+.bold {
+  font-weight: bold;
+}
 
+.italic {
+  font-style: italic;
+}
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
+  }
+  .rosso {
+    @apply border border-red-500;
+  }
+  .blu {
+    @apply border border-blue-500;
+  }
+  .verde {
+    @apply border border-green-500;
+  }
+  .giallo {
+    @apply border border-yellow-500;
+  }
+  .viola {
+    @apply border border-purple-500;
+  }
+  .arancione {
+    @apply border border-orange-500;
   }
 }
