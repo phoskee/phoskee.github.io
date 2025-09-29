@@ -186,7 +186,3 @@ function About({ sectionRef, nextRef }: SectionProps) {
     </section>
   );
 }
-
-function ProjectsCard({ title, nextRef }: ProjectCardProps) {
-  return <div></div>;
-}
