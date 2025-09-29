@@ -44,13 +44,6 @@
 }
 
 :root {
-  --heading-font:
-    "Iowan Old Style", "Palatino Linotype", "URW Palladio L", P052, serif;
-
-  --body-font:
-    Seravek, "Gill Sans Nova", Ubuntu, Calibri, "DejaVu Sans", source-sans-pro,
-    sans-serif;
-
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -118,45 +111,12 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 }
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  padding-top: 2rem;
-  font-family: var(--heading-font);
-  line-height: 1.2;
-}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
-  }
-  .rosso {
-    @apply border border-red-500;
-  }
-  .blu {
-    @apply border border-blue-500;
-  }
-  .verde {
-    @apply border border-green-500;
-  }
-  .giallo {
-    @apply border border-yellow-500;
-  }
-  .viola {
-    @apply border border-purple-500;
-  }
-  .arancione {
-    @apply border border-orange-500;
-  }
-  h1,
-  p,
-  a,
-  section {
-    @apply font-[Iowan_Old_Style] text-xl;
   }
 }

@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌐 Phoskee
 
-## Getting Started
+**Phoskee** è il mio spazio digitale, un luogo dove convergono design, codice e sperimentazione.  
+Qui raccolgo progetti, idee e strumenti che uniscono creatività e sviluppo software.
 
-First, run the development server:
+![Phoskee Logo](./assets/logo.svg)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Visione
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Costruire progetti snelli, utili e belli da usare.  
+L'obiettivo è creare soluzioni che siano **semplici da capire** e **facili da scalare**, con un'estetica pulita e un tocco personale.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🌱 Filosofia
 
-To learn more about Next.js, take a look at the following resources:
+> _"Il codice è uno strumento creativo, non solo una sequenza di istruzioni."_
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Phoskee nasce per esplorare la zona di confine tra **design** e **tecnologia**, dove la forma incontra la funzionalità.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 📂 Struttura della Repo
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## ⚖️ Licenza
+
+Questo progetto è rilasciato sotto la licenza indicata nel file [`LICENSE`](./LICENSE).
+
+---
+
+## 📫 Contatti
+
+Se vuoi entrare in contatto:
+
+- 🌍 **Sito Web:** [https://phoskee.dev](https://phoskee.dev)
+
+---
+
+Made with ❤️ by **Jacopo**
