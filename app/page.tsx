@@ -63,11 +63,6 @@ function Hero({ sectionRef, nextRef }: SectionProps) {
             [ click 👇🏼 to scroll down ]
           </TypingAnimation>
         </h6>
-        <div>
-          <button className="border-muted-foreground rounded-xl border p-4">
-            <Link href={"https://quiz-sapienza.phoskee.dev"}>culorotto</Link>
-          </button>
-        </div>
       </div>
       <footer className={footerStyle}>
         <button

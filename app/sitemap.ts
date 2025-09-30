@@ -3,6 +3,7 @@ export const dynamic = "force-static"; // next export richiede dati totalmente s
 import type { MetadataRoute } from "next";
 
 const HTTPS = "https://";
+const APP_NAME = "template.";
 const BASE_URL = "phoskee.dev";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -10,7 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const baseEntries: MetadataRoute.Sitemap = [
     {
-      url: `${HTTPS}${BASE_URL}/`,
+      url: `${HTTPS}${APP_NAME}${BASE_URL}/`,
       lastModified: now,
       changeFrequency: "daily",
       priority: 1,
